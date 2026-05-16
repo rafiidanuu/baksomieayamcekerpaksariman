@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mie Ayam & Bakso Pak Sariman – Purwokerto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ============================
+   CSS VARIABLES & BASE
+============================ */
+:root {
+  --orange: #FF6B2B;
+  --orange-soft: #FF8C55;
+  --orange-glow: rgba(255,107,43,0.25);
+  --orange-dim: rgba(255,107,43,0.12);
+  --black: #0A0A0A;
+  --dark1: #111111;
+  --dark2: #181818;
+  --dark3: #222222;
+  --dark4: #2A2A2A;
+  --white: #FFFFFF;
+  --white90: rgba(255,255,255,0.9);
+  --white60: rgba(255,255,255,0.6);
+  --white30: rgba(255,255,255,0.3);
+  --white10: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.12);
+  --text-primary: #F5F5F5;
+  --text-secondary: rgba(245,245,245,0.65);
+  --text-muted: rgba(245,245,245,0.35);
+  --shadow-orange: 0 8px 32px rgba(255,107,43,0.3);
+  --shadow-dark: 0 20px 60px rgba(0,0,0,0.6);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --nav-h: 70px;
+  --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  --transition-slow: all 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --black: #F7F3EE;
+  --dark1: #FFFFFF;
+  --dark2: #F5F1EC;
+  --dark3: #EDE8E0;
+  --dark4: #E5DFD5;
+  --glass: rgba(255,255,255,0.7);
+  --glass-border: rgba(0,0,0,0.1);
+  --white10: rgba(0,0,0,0.05);
+  --text-primary: #1A1A1A;
+  --text-secondary: rgba(26,26,26,0.65);
+  --text-muted: rgba(26,26,26,0.4);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.1);
+  --shadow-dark: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--black);
+  color:var(--text-primary);
+  overflow-x:hidden;
+  transition:background 0.5s ease,color 0.5s ease;
+}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--dark2)}
+::-webkit-scrollbar-thumb{background:var(--orange);border-radius:3px}
+
+/* ============================
+   LOADING SCREEN
+============================ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--black);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:24px;
+  transition:opacity 0.6s ease,visibility 0.6s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden}
+.loader-logo{
+  font-family:'Playfair Display',serif;
+  font-size:2rem;font-weight:900;
+  color:var(--white);
+  text-align:center;line-height:1.2;
+  animation:loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-logo span{color:var(--orange)}
+.loader-bar{
+  width:160px;height:3px;
+  background:var(--dark4);border-radius:999px;overflow:hidden;
+}
+.loader-fill{
+  height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-soft));
+  border-radius:999px;animation:loaderFill 2s ease forwards;
+}
+@keyframes loaderFill{from{width:0}to{width:100%}}
+@keyframes loaderPulse{0%,100%{opacity:1}50%{opacity:0.6}}
+
+/* ── NAVBAR ── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.72);backdrop-filter:blur(24px) saturate(200%);border-bottom:1px solid var(--glass-border);transition:var(--tr)}
+[data-theme="light"] #navbar{background:rgba(250,250,248,0.84)}
+.nav-brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.nav-logo-img{width:44px;height:44px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,107,43,0.45);box-shadow:0 4px 18px var(--orange-glow);transition:var(--tr);flex-shrink:0}
+.nav-logo-img:hover{transform:scale(1.1) rotate(-3deg)}
+.nav-logo-fb{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--orange),#ff3d00);display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;flex-shrink:0;border:2px solid rgba(255,107,43,0.45)}
+.nav-title{display:flex;flex-direction:column;line-height:1.2}
+.nav-title-main{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--text-primary);white-space:nowrap;letter-spacing:.01em}
+.nav-title-sub{font-size:.62rem;color:var(--orange);letter-spacing:.06em;font-weight:600;white-space:nowrap;text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nav-link{padding:8px 14px;border-radius:8px;font-size:.84rem;font-weight:500;color:var(--text-secondary);transition:var(--tr);position:relative}
+.nav-link::after{content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--orange);border-radius:1px;transition:width .3s}
+.nav-link:hover{color:var(--text-primary)}.nav-link:hover::after,.nav-link.active::after{width:55%}.nav-link.active{color:var(--orange)}
+.nav-cart-btn{position:relative;padding:8px 14px;border-radius:8px;font-size:.84rem;font-weight:500;color:var(--text-secondary);transition:var(--tr)}
+.nav-cart-btn:hover{color:var(--orange)}
+.cart-badge{position:absolute;top:2px;right:2px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--orange);color:#fff;font-size:.6rem;font-weight:800;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.cart-badge.show{transform:scale(1)}
+.theme-btn{width:38px;height:38px;border-radius:10px;background:var(--white10);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:.88rem;transition:var(--tr);border:1px solid var(--glass-border)}
+.theme-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;border-radius:8px;background:var(--white10);border:1px solid var(--glass-border);transition:var(--tr)}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text-primary);border-radius:1px;transition:var(--tr)}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;z-index:998;background:var(--dark1);border-bottom:1px solid var(--glass-border);padding:16px 5vw 24px;transform:translateY(-8px);opacity:0;transition:var(--tr)}
+#mobile-menu.open{display:block;transform:translateY(0);opacity:1}
+.mobile-nav-links{display:flex;flex-direction:column;gap:4px}
+.mobile-nav-link{padding:13px 16px;border-radius:10px;font-size:.92rem;font-weight:500;color:var(--text-secondary);transition:var(--tr);display:flex;align-items:center;gap:12px}
+.mobile-nav-link:hover,.mobile-nav-link.active{background:var(--orange-dim);color:var(--orange)}
+
+
+/* ============================
+   HERO SECTION
+============================ */
+#hero{
+  position:relative;height:100svh;min-height:600px;
+  overflow:hidden;
+}
+.hero-slides{position:relative;height:100%;width:100%}
+.hero-slide{
+  position:absolute;inset:0;
+  transition:opacity 1.2s ease, transform 8s linear;
+  opacity:0;transform:scale(1);
+}
+.hero-slide.active{opacity:1;transform:scale(1.07)}
+.hero-slide-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+}
+.hero-slide:nth-child(1) .hero-slide-bg{background-image:url('hero1.jpg'),linear-gradient(135deg,#1a0800 0%,#2d1200 50%,#0a0a0a 100%)}
+.hero-slide:nth-child(2) .hero-slide-bg{background-image:url('hero2.jpg'),linear-gradient(135deg,#0a0a0a 0%,#1a0a00 50%,#2d1200 100%)}
+.hero-slide:nth-child(3) .hero-slide-bg{background-image:url('hero3.jpg'),linear-gradient(135deg,#1a0800 0%,#0a0a0a 50%,#2d1200 100%)}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.5) 40%,rgba(0,0,0,.2) 70%,rgba(0,0,0,.1) 100%),
+             linear-gradient(to right,rgba(0,0,0,.6) 0%,transparent 60%);
+}
+.hero-content{
+  position:absolute;inset:0;z-index:2;
+  display:flex;align-items:flex-end;padding:0 8vw 10vh;
+}
+.hero-text{max-width:680px}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;border-radius:999px;
+  background:rgba(255,107,43,0.2);
+  border:1px solid rgba(255,107,43,0.4);
+  color:var(--orange-soft);font-size:.78rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:20px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .8s ease .3s,transform .8s ease .3s;
+}
+.hero-slide.active .hero-tag{opacity:1;transform:translateY(0)}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,7vw,5.5rem);
+  font-weight:900;line-height:1.05;
+  color:#fff;margin-bottom:16px;
+  opacity:0;transform:translateY(30px);
+  transition:opacity .9s ease .5s,transform .9s ease .5s;
+}
+.hero-slide.active .hero-title{opacity:1;transform:translateY(0)}
+.hero-title .accent{color:var(--orange)}
+.hero-desc{
+  font-size:1rem;color:rgba(255,255,255,0.7);
+  line-height:1.7;max-width:480px;margin-bottom:32px;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .9s ease .7s,transform .9s ease .7s;
+}
+.hero-slide.active .hero-desc{opacity:1;transform:translateY(0)}
+.hero-cta{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;transform:translateY(20px);
+  transition:opacity .9s ease .9s,transform .9s ease .9s;
+}
+.hero-slide.active .hero-cta{opacity:1;transform:translateY(0)}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  color:#fff;font-size:.95rem;font-weight:700;
+  box-shadow:0 4px 20px rgba(255,107,43,0.5);
+  transition:var(--transition);
+  letter-spacing:.02em;
+}
+.btn-primary:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 8px 32px rgba(255,107,43,0.6);
+}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.25);
+  color:#fff;font-size:.95rem;font-weight:600;
+  backdrop-filter:blur(10px);
+  transition:var(--transition);
+}
+.btn-secondary:hover{
+  background:rgba(255,255,255,0.2);transform:translateY(-3px);
+}
+/* ============================
+   HERO FLOATING FOOD ELEMENTS
+============================ */
+.hero-food-float{
+  position:absolute;z-index:1;pointer-events:none;
+  font-size:3rem;line-height:1;
+  filter:drop-shadow(0 8px 24px rgba(0,0,0,0.6));
+  animation:foodFloat linear infinite;
+  opacity:0;
+  user-select:none;
+}
+@keyframes foodFloat{
+  0%  {opacity:0;transform:translateY(0) rotate(0deg) scale(0.7);}
+  8%  {opacity:.9;}
+  90% {opacity:.85;}
+  100%{opacity:0;transform:translateY(-110vh) rotate(360deg) scale(1.1);}
+}
+.hero-steam{
+  position:absolute;z-index:1;pointer-events:none;
+  width:3px;border-radius:999px;
+  background:linear-gradient(to top,rgba(255,255,255,0.6),transparent);
+  animation:steamRise 2.5s ease-in-out infinite;
+  opacity:0;
+}
+@keyframes steamRise{
+  0%  {opacity:0;transform:translateY(0) scaleX(1);}
+  40% {opacity:.7;transform:translateY(-40px) scaleX(1.6);}
+  100%{opacity:0;transform:translateY(-90px) scaleX(.8);}
+}
+/* Bowl SVG card floating in hero */
+.hero-bowl-card{
+  position:absolute;z-index:1;pointer-events:none;
+  border-radius:20px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.18);
+  padding:14px 18px;
+  display:flex;align-items:center;gap:12px;
+  white-space:nowrap;
+  box-shadow:0 12px 40px rgba(0,0,0,0.4);
+  animation:bowlCardFloat ease-in-out infinite;
+}
+.hero-bowl-card .bowl-emoji{font-size:2rem;line-height:1}
+.hero-bowl-card .bowl-text{display:flex;flex-direction:column;gap:2px}
+.hero-bowl-card .bowl-name{font-size:.8rem;font-weight:700;color:#fff}
+.hero-bowl-card .bowl-price{font-size:.7rem;color:var(--orange);font-weight:600}
+@keyframes bowlCardFloat{
+  0%,100%{transform:translateY(0) rotate(-1deg);}
+  50%{transform:translateY(-14px) rotate(1deg);}
+}
+/* Particle dots */
+.hero-particle{
+  position:absolute;z-index:1;pointer-events:none;
+  border-radius:999px;
+  background:var(--orange);
+  animation:particleDrift linear infinite;
+  opacity:0;
+}
+@keyframes particleDrift{
+  0%  {opacity:0;transform:translateY(0) scale(0);}
+  10% {opacity:.6;}
+  90% {opacity:.3;}
+  100%{opacity:0;transform:translateY(-60vh) translateX(30px) scale(1.5);}
+}
+
+  display:flex;gap:10px;z-index:3;
+}
+.hero-dot{
+  width:28px;height:4px;border-radius:2px;
+  background:rgba(255,255,255,0.3);transition:var(--transition);cursor:pointer;
+}
+.hero-dot.active{background:var(--orange);width:44px}
+.hero-arrows{
+  position:absolute;bottom:50%;transform:translateY(50%);
+  right:5vw;z-index:3;
+  display:flex;flex-direction:column;gap:10px;
+}
+.hero-arrow{
+  width:42px;height:42px;border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  backdrop-filter:blur(10px);
+  color:#fff;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:var(--transition);
+}
+.hero-arrow:hover{background:var(--orange);border-color:var(--orange)}
+
+/* ============================
+   SECTIONS BASE
+============================ */
+section{padding:100px 5vw}
+.section-tag{
+  display:inline-block;
+  padding:5px 16px;border-radius:999px;
+  background:var(--orange-dim);
+  color:var(--orange);font-size:.75rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:900;line-height:1.15;
+  color:var(--text-primary);margin-bottom:12px;
+}
+.section-title .accent{color:var(--orange)}
+.section-desc{
+  font-size:1rem;color:var(--text-secondary);
+  line-height:1.7;max-width:540px;
+}
+.section-header{margin-bottom:56px}
+
+/* Reveal animation */
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{
+  opacity:0;transform:translateX(-40px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{
+  opacity:0;transform:translateX(40px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ============================
+   WHY SECTION
+============================ */
+#why{background:var(--dark1)}
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.why-card{
+  position:relative;overflow:hidden;
+  padding:36px 28px;border-radius:var(--radius-lg);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(12px);
+  transition:var(--transition);
+  animation:floatCard 4s ease-in-out infinite;
+}
+.why-card:nth-child(2){animation-delay:.5s}
+.why-card:nth-child(3){animation-delay:1s}
+.why-card:nth-child(4){animation-delay:1.5s}
+.why-card:nth-child(5){animation-delay:2s}
+.why-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 0%,var(--orange-dim),transparent 70%);
+  opacity:0;transition:var(--transition);
+}
+.why-card:hover{
+  transform:translateY(-10px) scale(1.02);
+  border-color:var(--orange);
+  box-shadow:0 20px 60px rgba(255,107,43,0.2);
+}
+.why-card:hover::before{opacity:1}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.why-card:hover{animation:none}
+.why-icon{
+  width:56px;height:56px;border-radius:16px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;color:#fff;
+  margin-bottom:20px;
+  box-shadow:0 8px 24px var(--orange-glow);
+  transition:var(--transition);
+}
+.why-card:hover .why-icon{transform:scale(1.15) rotate(5deg)}
+.why-title{
+  font-size:1.1rem;font-weight:700;
+  color:var(--text-primary);margin-bottom:8px;
+}
+.why-desc{
+  font-size:.875rem;color:var(--text-secondary);line-height:1.65;
+}
+
+/* ============================
+   STATS SECTION
+============================ */
+#stats{
+  background:linear-gradient(135deg,var(--dark2) 0%,var(--dark1) 100%);
+  position:relative;overflow:hidden;
+}
+#stats::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(255,107,43,0.08),transparent);
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:24px;position:relative;z-index:1;
+}
+.stat-card{
+  text-align:center;padding:40px 24px;
+  border-radius:var(--radius-lg);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(12px);
+  transition:var(--transition);
+}
+.stat-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--orange);
+  box-shadow:var(--shadow-orange);
+}
+.stat-number{
+  font-family:'Playfair Display',serif;
+  font-size:3rem;font-weight:900;
+  color:var(--orange);line-height:1;
+  margin-bottom:8px;
+}
+.stat-label{
+  font-size:.875rem;color:var(--text-secondary);
+  font-weight:500;letter-spacing:.02em;
+}
+.stat-icon{
+  font-size:1.5rem;color:var(--orange);
+  margin-bottom:16px;opacity:.7;
+}
+
+/* ============================
+   MENU SECTION
+============================ */
+#menu{background:var(--black)}
+.category-nav{
+  position:sticky;top:var(--nav-h);z-index:90;
+  background:var(--dark1);
+  border-bottom:1px solid var(--glass-border);
+  padding:0 5vw;
+  margin:0 -5vw 56px;
+  display:flex;align-items:center;gap:0;
+  overflow-x:auto;scrollbar-width:none;
+}
+.category-nav::-webkit-scrollbar{display:none}
+.cat-btn{
+  flex-shrink:0;
+  padding:16px 22px;
+  font-size:.875rem;font-weight:600;
+  color:var(--text-secondary);
+  border-bottom:2.5px solid transparent;
+  transition:var(--transition);white-space:nowrap;
+  position:relative;
+}
+.cat-btn::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;
+  height:2.5px;background:var(--orange);
+  transform:scaleX(0);transition:transform 0.3s ease;
+  transform-origin:center;
+}
+.cat-btn:hover{color:var(--text-primary)}
+.cat-btn.active{color:var(--orange)}
+.cat-btn.active::after,.cat-btn:hover::after{transform:scaleX(1)}
+.menu-section-block{margin-bottom:72px}
+.menu-section-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.7rem;font-weight:800;
+  color:var(--text-primary);
+  margin-bottom:28px;padding-bottom:16px;
+  border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;gap:14px;
+}
+.menu-section-title span{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:10px;
+  background:var(--orange-dim);color:var(--orange);
+  font-size:.9rem;
+}
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+@media(max-width:960px){.menu-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.menu-grid{grid-template-columns:1fr}}
+.menu-card{
+  border-radius:var(--radius-lg);overflow:hidden;
+  background:var(--dark2);
+  border:1px solid var(--glass-border);
+  transition:var(--transition);
+  position:relative;
+  animation:floatCard 5s ease-in-out infinite;
+}
+.menu-card:nth-child(2n){animation-delay:.7s}
+.menu-card:nth-child(3n){animation-delay:1.4s}
+.menu-card:nth-child(4n){animation-delay:2.1s}
+.menu-card:hover{
+  transform:translateY(-12px) scale(1.02);
+  box-shadow:0 24px 60px rgba(0,0,0,0.5),0 0 0 1px var(--orange);
+  animation:none;
+}
+.menu-card-img{
+  position:relative;height:185px;overflow:hidden;
+}
+.menu-card-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  background:var(--dark3);
+}
+.menu-card:hover .menu-card-img img{transform:scale(1.12)}
+.menu-card-badge{
+  position:absolute;top:12px;left:12px;
+  padding:4px 10px;border-radius:6px;
+  background:var(--orange);color:#fff;
+  font-size:.7rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.menu-card-body{padding:18px}
+.menu-card-name{
+  font-size:1rem;font-weight:700;
+  color:var(--text-primary);margin-bottom:5px;line-height:1.3;
+}
+.menu-card-desc{
+  font-size:.8rem;color:var(--text-secondary);
+  line-height:1.55;margin-bottom:14px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.menu-card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+}
+.menu-price{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;font-weight:700;color:var(--orange);
+}
+.add-btn{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  color:#fff;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);
+  box-shadow:0 4px 12px var(--orange-glow);
+  flex-shrink:0;
+}
+.add-btn:hover{transform:scale(1.15) rotate(90deg)}
+
+/* ============================
+   CART FLOATING
+============================ */
+#cart-fab{
+  position:fixed;bottom:28px;right:28px;z-index:890;
+  width:60px;height:60px;border-radius:18px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  color:#fff;font-size:1.3rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 30px rgba(255,107,43,0.5);
+  transition:var(--transition);
+  transform:scale(0);
+}
+#cart-fab.show{transform:scale(1)}
+#cart-fab:hover{transform:scale(1.1)}
+#cart-fab-count{
+  position:absolute;top:-8px;right:-8px;
+  min-width:22px;height:22px;padding:0 5px;
+  border-radius:999px;background:#fff;
+  color:var(--orange);font-size:.7rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Cart Modal */
+#cart-modal{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:0;pointer-events:none;
+}
+#cart-modal.open{pointer-events:all}
+.cart-backdrop{
+  position:absolute;inset:0;background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);opacity:0;
+  transition:opacity .4s ease;
+}
+#cart-modal.open .cart-backdrop{opacity:1}
+.cart-panel{
+  position:relative;z-index:1;
+  width:420px;max-width:100vw;height:100svh;
+  background:var(--dark1);
+  border-left:1px solid var(--glass-border);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .45s cubic-bezier(0.4,0,0.2,1);
+}
+#cart-modal.open .cart-panel{transform:translateX(0)}
+.cart-header{
+  padding:24px;border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.cart-header-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:800;color:var(--text-primary);
+}
+.cart-close{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--white10);color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;
+  transition:var(--transition);
+}
+.cart-close:hover{background:var(--orange);color:#fff}
+.cart-items{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.cart-empty{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  color:var(--text-muted);text-align:center;
+}
+.cart-empty i{font-size:3rem;color:var(--orange);opacity:.3}
+.cart-item{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:16px;border-radius:var(--radius-md);
+  background:var(--white10);border:1px solid var(--glass-border);
+  animation:slideInRight .35s ease forwards;
+}
+@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.cart-item-img{
+  width:64px;height:64px;border-radius:10px;object-fit:cover;
+  background:var(--dark3);flex-shrink:0;
+}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-size:.9rem;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.cart-item-price{font-size:.85rem;color:var(--orange);font-weight:600}
+.cart-item-qty{
+  display:flex;align-items:center;gap:10px;margin-top:10px;
+}
+.qty-btn{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--dark4);color:var(--text-primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;font-weight:700;transition:var(--transition);
+}
+.qty-btn:hover{background:var(--orange);color:#fff}
+.qty-num{font-size:.9rem;font-weight:700;color:var(--text-primary);min-width:24px;text-align:center}
+.cart-footer{
+  padding:20px 24px;border-top:1px solid var(--glass-border);
+  flex-shrink:0;
+}
+.cart-summary{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:16px;
+}
+.cart-total-label{font-size:.875rem;color:var(--text-secondary);font-weight:500}
+.cart-total-val{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;font-weight:800;color:var(--orange);
+}
+.cart-pay-opts{margin-bottom:16px}
+.cart-pay-label{font-size:.78rem;color:var(--text-muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.pay-options{display:flex;gap:8px;flex-wrap:wrap}
+.pay-opt{
+  flex:1;min-width:80px;padding:10px 12px;border-radius:10px;
+  background:var(--white10);border:1.5px solid var(--glass-border);
+  color:var(--text-secondary);font-size:.8rem;font-weight:600;
+  text-align:center;transition:var(--transition);cursor:pointer;
+}
+.pay-opt.selected{border-color:var(--orange);color:var(--orange);background:var(--orange-dim)}
+.checkout-btn{
+  width:100%;padding:16px;border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  color:#fff;font-size:1rem;font-weight:700;
+  box-shadow:0 4px 20px var(--orange-glow);
+  transition:var(--transition);display:flex;
+  align-items:center;justify-content:center;gap:10px;
+}
+.checkout-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--orange-glow)}
+
+/* ============================
+   TESTIMONIALS
+============================ */
+#testi{background:var(--dark1)}
+.testi-slider{position:relative;overflow:hidden}
+.testi-track{display:flex;gap:20px;transition:transform .6s cubic-bezier(0.4,0,0.2,1)}
+.testi-card{
+  flex-shrink:0;width:340px;
+  padding:28px 24px;border-radius:var(--radius-lg);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(12px);
+  transition:var(--transition);
+}
+.testi-card:hover{border-color:var(--orange);transform:translateY(-6px)}
+.testi-stars{color:var(--orange);font-size:.95rem;margin-bottom:14px;letter-spacing:2px}
+.testi-text{
+  font-size:.9rem;line-height:1.7;
+  color:var(--text-secondary);margin-bottom:18px;
+  font-style:italic;
+}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:42px;height:42px;border-radius:999px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:1rem;flex-shrink:0;
+}
+.testi-name{font-weight:700;font-size:.9rem;color:var(--text-primary)}
+.testi-role{font-size:.75rem;color:var(--text-muted)}
+.testi-controls{
+  display:flex;justify-content:center;gap:10px;margin-top:32px;
+}
+.testi-dot{
+  width:32px;height:4px;border-radius:2px;
+  background:var(--dark4);transition:var(--transition);cursor:pointer;
+}
+.testi-dot.active{background:var(--orange);width:48px}
+
+/* ============================
+   LOCATION
+============================ */
+#location{background:var(--black)}
+.location-grid{
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:40px;align-items:start;
+}
+.branch-list{display:flex;flex-direction:column;gap:16px}
+.branch-card{
+  padding:20px;border-radius:var(--radius-md);
+  background:var(--glass);
+  border:1px solid var(--glass-border);
+  transition:var(--transition);cursor:pointer;
+}
+.branch-card:hover,.branch-card.active-branch{
+  border-color:var(--orange);
+  background:var(--orange-dim);
+}
+.branch-card-top{
+  display:flex;align-items:center;gap:14px;margin-bottom:10px;
+}
+.branch-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:var(--orange-dim);color:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;
+  transition:var(--transition);
+}
+.branch-card:hover .branch-icon,.branch-card.active-branch .branch-icon{
+  background:var(--orange);color:#fff;
+}
+.branch-name{font-weight:700;font-size:.95rem;color:var(--text-primary)}
+.branch-address{
+  font-size:.82rem;color:var(--text-secondary);line-height:1.55;
+  padding-left:54px;
+}
+.map-container{
+  border-radius:var(--radius-lg);overflow:hidden;
+  height:480px;border:1px solid var(--glass-border);
+  position:sticky;top:calc(var(--nav-h) + 20px);
+}
+.map-container iframe{width:100%;height:100%;border:none}
+
+/* ============================
+   JAM OPERASIONAL
+============================ */
+#jam{background:var(--dark2)}
+.jam-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.jam-card{
+  padding:28px 24px;border-radius:var(--radius-lg);
+  background:var(--glass);border:1px solid var(--glass-border);
+  display:flex;align-items:center;gap:20px;
+  transition:var(--transition);
+}
+.jam-card:hover{
+  border-color:var(--orange);
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-orange);
+}
+.jam-icon{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,var(--orange),#ff3d00);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:#fff;flex-shrink:0;
+  box-shadow:0 6px 18px var(--orange-glow);
+  transition:var(--transition);
+}
+.jam-card:hover .jam-icon{transform:rotate(15deg) scale(1.1)}
+.jam-info{}
+.jam-day{font-size:.78rem;color:var(--text-muted);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.jam-time{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;color:var(--text-primary)}
+.jam-note{font-size:.8rem;color:var(--orange);margin-top:2px;font-weight:500}
+
+.jam-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:999px;
+  background:rgba(34,197,94,0.15);
+  color:#22c55e;font-size:.75rem;font-weight:700;margin-top:6px;
+}
+.jam-status::before{
+  content:'';width:6px;height:6px;border-radius:999px;
+  background:#22c55e;animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+
+/* ── FOOTER ── */
+#footer{background:var(--dark1);border-top:1px solid var(--glass-border);padding:72px 5vw 36px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:52px}
+.footer-brand{}
+.footer-logo-wrap{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.footer-logo-img{width:46px;height:46px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,107,43,.4)}
+.footer-logo-fb{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--orange),#ff3200);display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff}
+.footer-brand-name{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--text-primary);line-height:1.3;letter-spacing:-.01em}
+.footer-brand-sub{font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.footer-desc{font-size:.84rem;color:var(--text-secondary);line-height:1.74;margin-bottom:22px;max-width:340px}
+.footer-socials{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.soc-link{width:40px;height:40px;border-radius:11px;background:var(--white10);border:1px solid var(--glass-border);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:.92rem;transition:var(--tr)}
+.soc-link:hover{background:var(--orange);color:#fff;border-color:var(--orange);transform:translateY(-3px)}
+.footer-orders{display:flex;flex-wrap:wrap;gap:8px}
+.order-badge{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:10px;background:var(--white10);border:1px solid var(--glass-border);color:var(--text-secondary);font-size:.8rem;font-weight:600;transition:var(--tr)}
+.order-badge:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
+.order-badge i{color:var(--orange)}
+.footer-col-title{font-size:.72rem;font-weight:700;color:var(--text-primary);letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.footer-col-title::after{content:'';flex:1;height:1px;background:var(--glass-border)}
+.footer-links{display:flex;flex-direction:column;gap:11px}
+.foot-link{font-size:.85rem;color:var(--text-secondary);transition:var(--tr);display:flex;align-items:center;gap:9px}
+.foot-link:hover{color:var(--orange);padding-left:4px}
+.foot-link i{color:var(--orange);width:16px;text-align:center;flex-shrink:0}
+.footer-bottom{padding-top:28px;border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy,.footer-by{font-size:.78rem;color:var(--text-muted)}
+.footer-by a{color:var(--orange);font-weight:600}
+
+/* ============================
+   TOAST NOTIFICATION
+============================ */
+#toast-container{
+  position:fixed;bottom:100px;right:28px;z-index:2000;
+  display:flex;flex-direction:column;gap:10px;
+}
+.toast{
+  padding:12px 18px;border-radius:12px;
+  background:var(--dark2);border:1px solid var(--glass-border);
+  color:var(--text-primary);font-size:.875rem;font-weight:500;
+  box-shadow:var(--shadow-card);
+  display:flex;align-items:center;gap:10px;
+  animation:toastIn .4s ease forwards;
+  max-width:300px;
+}
+.toast i{color:var(--orange)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.toast.out{animation:toastOut .4s ease forwards}
+@keyframes toastOut{to{opacity:0;transform:translateX(40px)}}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media(max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .location-grid{grid-template-columns:1fr}
+  .map-container{position:static;height:360px}
+}
+@media(max-width:768px){
+  section{padding:70px 5vw}
+  .nav-links,.nav-cart-btn.desk{display:none}
+  .hamburger{display:flex}
+  .hero-content{padding:0 6vw 14vw}
+  .hero-arrows{display:none}
+  .menu-card-img{height:145px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-brand-title{font-size:.9rem}
+  .cart-panel{width:100vw}
+  .why-grid{grid-template-columns:1fr 1fr}
+  #cart-fab{bottom:20px;right:20px;width:54px;height:54px;border-radius:14px}
+  .footer-bottom{flex-direction:column;text-align:center}
+}
+@media(max-width:480px){
+  .why-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .jam-grid{grid-template-columns:1fr}
+  .testi-card{width:280px}
+  .hero-title{font-size:2.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-logo">
+    Mie Ayam & Bakso<br><span>Pak Sariman</span>
+  </div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="nav-brand">
+    <img id="nav-logo-img" class="nav-logo-img"
+      src="pp.png" alt="Pak Sariman"
+      onerror="this.style.display='none';document.getElementById('nav-logo-fb').style.display='flex'">
+    <div class="nav-logo-fb" id="nav-logo-fb" style="display:none">🍜</div>
+    <div class="nav-title">
+      <span class="nav-title-main">Bakso & Mie Ayam Ceker Pak Sariman</span>
+      <span class="nav-title-sub">Purwokerto · Est. 1993</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#hero" class="nav-link active" data-section="hero">Beranda</a>
+    <a href="#menu" class="nav-link" data-section="menu">Menu</a>
+    <a href="#why" class="nav-link" data-section="why">Tentang</a>
+    <a href="#location" class="nav-link" data-section="location">Lokasi</a>
+    <button class="nav-cart-btn desk" onclick="openCart()">
+      <i class="fa-solid fa-bag-shopping"></i> Keranjang
+      <span class="cart-badge" id="nav-badge">0</span>
+    </button>
+    <button class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
+  </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-menu">
+  <div class="mobile-nav-links">
+    <a href="#hero" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-house"></i>Beranda</a>
+    <a href="#menu" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-bowl-food"></i>Menu</a>
+    <a href="#why" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-circle-info"></i>Tentang</a>
+    <a href="#location" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-map-pin"></i>Lokasi</a>
+    <a href="#" class="mobile-nav-link" onclick="openCart();closeMobileMenu()"><i class="fa-solid fa-bag-shopping"></i>Keranjang</a>
+    <a href="https://wa.me/620811291201" target="_blank" class="mobile-nav-link"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+  </div>
+</div>
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <div class="mobile-nav-links">
+    <a href="#hero" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-house me-2"></i> Beranda</a>
+    <a href="#menu" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-bowl-food me-2"></i> Menu</a>
+    <a href="#why" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-circle-info me-2"></i> Tentang</a>
+    <a href="#location" class="mobile-nav-link" onclick="closeMobileMenu()"><i class="fa-solid fa-map-pin me-2"></i> Lokasi</a>
+    <a href="#" class="mobile-nav-link" onclick="openCart();closeMobileMenu()"><i class="fa-solid fa-bag-shopping me-2"></i> Keranjang</a>
+    <a href="https://wa.me/6281234567890" target="_blank" class="mobile-nav-link"><i class="fa-brands fa-whatsapp me-2"></i> WhatsApp</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<style>
+/* Per-slide text overrides */
+.hero-slide[data-slide="1"] .hero-tag-txt::before{content:"🔥 Cita Rasa Autentik Sejak 1998"}
+.hero-slide[data-slide="2"] .hero-tag-txt::before{content:"⭐ Menu Andalan Pelanggan Setia"}
+.hero-slide[data-slide="3"] .hero-tag-txt::before{content:"🏆 Bakso Terenak Se-Purwokerto"}
+.hero-slide[data-slide="4"] .hero-tag-txt::before{content:"🥢 Mie Ayam Premium Spesial"}
+.hero-slide[data-slide="5"] .hero-tag-txt::before{content:"💛 Keluarga Besar Pak Sariman"}
+/* SVG slide backgrounds */
+.slide-svg-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+</style>
+
+<section id="hero">
+  <div class="hero-slides" id="hero-slides">
+
+    <!-- SLIDE 1: Bakso Mangkok merah -->
+    <div class="hero-slide active" data-slide="1">
+      <div class="hero-slide-bg" style="background:#1a0500">
+        <svg class="slide-svg-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg1" cx="70%" cy="40%"><stop offset="0%" stop-color="#3d1200"/><stop offset="100%" stop-color="#0a0300"/></radialGradient>
+            <radialGradient id="steam1" cx="50%" cy="100%"><stop offset="0%" stop-color="rgba(255,200,150,0.3)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+            <filter id="blur1"><feGaussianBlur stdDeviation="3"/></filter>
+            <filter id="glow1"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <radialGradient id="soupG" cx="50%" cy="40%"><stop offset="0%" stop-color="#c84b00"/><stop offset="60%" stop-color="#8b2000"/><stop offset="100%" stop-color="#4a0f00"/></radialGradient>
+            <radialGradient id="bowlG" cx="50%" cy="30%"><stop offset="0%" stop-color="#f5f0e8"/><stop offset="100%" stop-color="#d4c8b0"/></radialGradient>
+          </defs>
+          <!-- Background glow -->
+          <rect width="1440" height="900" fill="url(#bg1)"/>
+          <ellipse cx="960" cy="420" rx="500" ry="380" fill="rgba(180,60,0,0.12)" filter="url(#blur1)"/>
+          <!-- Bokeh dots -->
+          <circle cx="200" cy="150" r="3" fill="rgba(255,120,30,0.4)"/><circle cx="350" cy="80" r="2" fill="rgba(255,180,80,0.3)"/>
+          <circle cx="1300" cy="200" r="4" fill="rgba(255,100,20,0.3)"/><circle cx="1100" cy="700" r="3" fill="rgba(255,140,50,0.25)"/>
+          <circle cx="100" cy="600" r="5" fill="rgba(255,80,10,0.2)"/><circle cx="700" cy="100" r="2" fill="rgba(255,200,100,0.3)"/>
+          <!-- Steam wisps -->
+          <path d="M870 260 Q880 230 865 200 Q850 170 860 140" stroke="rgba(255,220,180,0.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M930 250 Q945 215 930 185 Q915 155 925 120" stroke="rgba(255,220,180,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M990 265 Q1000 235 988 205 Q976 175 986 145" stroke="rgba(255,220,180,0.18)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Main bowl -->
+          <ellipse cx="930" cy="530" rx="260" ry="50" fill="rgba(0,0,0,0.35)"/>
+          <path d="M670 400 Q680 540 930 570 Q1180 540 1190 400 L1190 390 Q1180 360 930 350 Q680 360 670 390 Z" fill="url(#bowlG)"/>
+          <!-- Soup surface -->
+          <ellipse cx="930" cy="393" rx="255" ry="42" fill="url(#soupG)"/>
+          <!-- Oil sheen on soup -->
+          <ellipse cx="900" cy="385" rx="80" ry="15" fill="rgba(255,180,60,0.25)" transform="rotate(-10,900,385)"/>
+          <ellipse cx="970" cy="400" rx="50" ry="10" fill="rgba(255,150,30,0.2)" transform="rotate(5,970,400)"/>
+          <!-- Bakso balls -->
+          <circle cx="860" cy="390" r="36" fill="#c8401a"/><circle cx="860" cy="390" r="36" fill="none" stroke="rgba(255,150,80,0.4)" stroke-width="2"/>
+          <circle cx="855" cy="382" r="10" fill="rgba(255,180,120,0.3)"/>
+          <circle cx="960" cy="388" r="30" fill="#b83510"/><circle cx="957" cy="381" r="8" fill="rgba(255,170,100,0.3)"/>
+          <circle cx="1040" cy="392" r="28" fill="#c24020"/><circle cx="1037" cy="385" r="7" fill="rgba(255,160,90,0.3)"/>
+          <circle cx="810" cy="400" r="22" fill="#b03010"/>
+          <circle cx="1080" cy="398" r="20" fill="#bf3c18"/>
+          <!-- Mie noodles peeking -->
+          <path d="M820 395 Q850 380 880 400 Q910 415 940 395 Q970 375 1000 395" stroke="#f5d080" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M830 405 Q860 390 890 408 Q920 422 950 405 Q980 388 1010 405" stroke="#e8c070" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <!-- Daun bawang (green onion) -->
+          <circle cx="920" cy="380" r="4" fill="#4a9a30"/><circle cx="935" cy="375" r="3" fill="#3d8a25"/><circle cx="910" cy="385" r="3" fill="#56aa3a"/>
+          <!-- Bowl rim highlight -->
+          <ellipse cx="930" cy="352" rx="253" ry="18" fill="rgba(255,255,255,0.08)"/>
+          <!-- Decorative spoon -->
+          <ellipse cx="1170" cy="455" rx="22" ry="14" fill="#e8e0d0" transform="rotate(30,1170,455)"/>
+          <rect x="1176" y="445" width="8" height="70" rx="4" fill="#d4ccc0" transform="rotate(30,1180,455)"/>
+          <!-- Chopsticks -->
+          <rect x="635" y="340" width="5" height="220" rx="2.5" fill="#c8a060" transform="rotate(-15,640,440)"/>
+          <rect x="652" y="335" width="5" height="220" rx="2.5" fill="#b89050" transform="rotate(-12,657,435)"/>
+          <!-- Garnish - cabai merah -->
+          <ellipse cx="1000" cy="378" rx="18" ry="6" fill="#e03020" transform="rotate(-20,1000,378)"/>
+          <circle cx="988" cy="374" r="3" fill="#5a8c20"/>
+          <!-- Side ingredients scattered -->
+          <circle cx="300" cy="300" r="45" fill="#c04018" opacity="0.15" filter="url(#blur1)"/>
+          <circle cx="1380" cy="600" r="60" fill="#b83510" opacity="0.1" filter="url(#blur1)"/>
+          <!-- Text shadow glow -->
+          <ellipse cx="400" cy="580" rx="300" ry="180" fill="rgba(0,0,0,0.5)" filter="url(#blur1)"/>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <!-- SLIDE 2: Mie Ayam premium -->
+    <div class="hero-slide" data-slide="2">
+      <div class="hero-slide-bg" style="background:#0d1a00">
+        <svg class="slide-svg-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg2" cx="65%" cy="45%"><stop offset="0%" stop-color="#1a3300"/><stop offset="100%" stop-color="#050d00"/></radialGradient>
+            <radialGradient id="bowlG2" cx="50%" cy="30%"><stop offset="0%" stop-color="#f0ebe0"/><stop offset="100%" stop-color="#c8bfa8"/></radialGradient>
+            <radialGradient id="mieG" cx="50%" cy="50%"><stop offset="0%" stop-color="#f5d878"/><stop offset="100%" stop-color="#c8a830"/></radialGradient>
+            <filter id="blur2"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <rect width="1440" height="900" fill="url(#bg2)"/>
+          <ellipse cx="950" cy="430" rx="480" ry="360" fill="rgba(80,140,0,0.08)" filter="url(#blur2)"/>
+          <!-- Bokeh -->
+          <circle cx="150" cy="200" r="3" fill="rgba(180,230,80,0.35)"/><circle cx="400" cy="120" r="2" fill="rgba(200,255,100,0.25)"/>
+          <circle cx="1350" cy="180" r="4" fill="rgba(150,200,50,0.3)"/><circle cx="1200" cy="720" r="3" fill="rgba(120,180,40,0.2)"/>
+          <!-- Steam -->
+          <path d="M875 265 Q888 230 872 198 Q856 166 867 132" stroke="rgba(220,240,180,0.22)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M940 252 Q955 217 940 185 Q925 153 935 118" stroke="rgba(220,240,180,0.18)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M1005 268 Q1016 233 1004 201" stroke="rgba(220,240,180,0.15)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Shadow under bowl -->
+          <ellipse cx="940" cy="548" rx="265" ry="48" fill="rgba(0,0,0,0.4)"/>
+          <!-- Bowl -->
+          <path d="M678 405 Q688 548 940 578 Q1192 548 1202 405 L1200 394 Q1190 364 940 354 Q690 364 680 394 Z" fill="url(#bowlG2)"/>
+          <!-- Noodle base (mie kuning) -->
+          <ellipse cx="940" cy="397" rx="258" ry="44" fill="#d4a020"/>
+          <!-- Mie ayam layers -->
+          <path d="M730 395 Q780 365 830 395 Q880 420 930 395 Q980 370 1030 395 Q1080 420 1130 395 Q1160 378 1150 395" stroke="#f0c840" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M740 408 Q790 382 840 408 Q890 430 940 408 Q990 386 1040 408 Q1090 428 1140 408" stroke="#e8bc38" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M750 420 Q800 396 850 420 Q900 440 950 420 Q1000 400 1050 420 Q1100 438 1145 420" stroke="#d4a820" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M760 430 Q808 408 856 430 Q904 450 952 430 Q1000 410 1048 430 Q1090 448 1135 430" stroke="#c89818" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- Ayam cincang topping -->
+          <ellipse cx="900" cy="382" rx="55" ry="22" fill="#8b5a20" opacity="0.9"/>
+          <ellipse cx="898" cy="380" rx="52" ry="20" fill="#9a6428"/>
+          <ellipse cx="980" cy="385" rx="40" ry="16" fill="#8b5a20"/>
+          <ellipse cx="978" cy="383" rx="38" ry="14" fill="#9a6428"/>
+          <!-- Chicken detail -->
+          <ellipse cx="900" cy="381" rx="25" ry="8" fill="rgba(180,120,50,0.5)"/>
+          <ellipse cx="975" cy="384" rx="18" ry="6" fill="rgba(180,120,50,0.5)"/>
+          <!-- Sawi hijau -->
+          <ellipse cx="840" cy="388" rx="28" ry="10" fill="#2a7a10" transform="rotate(-15,840,388)"/>
+          <ellipse cx="838" cy="386" rx="25" ry="9" fill="#38942a" transform="rotate(-15,838,386)"/>
+          <ellipse cx="1060" cy="390" rx="24" ry="9" fill="#2a7a10" transform="rotate(10,1060,390)"/>
+          <ellipse cx="1058" cy="388" rx="21" ry="8" fill="#38942a" transform="rotate(10,1058,388)"/>
+          <!-- Pangsit goreng -->
+          <path d="M800 378 L820 362 L840 370 L838 388 L818 394 Z" fill="#f0d870" stroke="#c8a820" stroke-width="1.5"/>
+          <path d="M800 378 L820 362 L838 370" stroke="rgba(200,160,30,0.5)" stroke-width="1" fill="none"/>
+          <!-- Kecap drizzle -->
+          <path d="M870 376 Q890 368 910 378 Q920 382 930 376" stroke="rgba(40,20,0,0.7)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Bowl rim -->
+          <ellipse cx="940" cy="356" rx="256" ry="18" fill="rgba(255,255,255,0.07)"/>
+          <!-- Sumpit -->
+          <rect x="648" y="345" width="5" height="230" rx="2.5" fill="#a07030" transform="rotate(-14,650,450)"/>
+          <rect x="665" y="340" width="5" height="230" rx="2.5" fill="#906820" transform="rotate(-11,667,445)"/>
+          <!-- Bahan di sekitar -->
+          <ellipse cx="350" cy="280" rx="50" ry="50" fill="#2a6010" opacity="0.12" filter="url(#blur2)"/>
+          <ellipse cx="1380" cy="580" rx="70" ry="70" fill="#3a7818" opacity="0.1" filter="url(#blur2)"/>
+          <!-- Text area shadow -->
+          <ellipse cx="380" cy="580" rx="290" ry="170" fill="rgba(0,0,0,0.45)" filter="url(#blur2)"/>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <!-- SLIDE 3: Bakso bakar & kuah pedas -->
+    <div class="hero-slide" data-slide="3">
+      <div class="hero-slide-bg" style="background:#1a0800">
+        <svg class="slide-svg-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg3" cx="60%" cy="50%"><stop offset="0%" stop-color="#2d0e00"/><stop offset="100%" stop-color="#0a0400"/></radialGradient>
+            <radialGradient id="fireG" cx="50%" cy="80%"><stop offset="0%" stop-color="#ff6000"/><stop offset="50%" stop-color="#ff3000"/><stop offset="100%" stop-color="#cc1000"/></radialGradient>
+            <filter id="fireBlur"><feGaussianBlur stdDeviation="6"/></filter>
+            <filter id="blur3"><feGaussianBlur stdDeviation="3"/></filter>
+          </defs>
+          <rect width="1440" height="900" fill="url(#bg3)"/>
+          <!-- Fire glow atmosphere -->
+          <ellipse cx="950" cy="650" rx="420" ry="280" fill="rgba(255,80,0,0.12)" filter="url(#fireBlur)"/>
+          <ellipse cx="950" cy="500" rx="300" ry="200" fill="rgba(255,120,0,0.08)" filter="url(#fireBlur)"/>
+          <!-- Bokeh sparks -->
+          <circle cx="900" cy="320" r="2" fill="rgba(255,150,50,0.6)"/><circle cx="1020" cy="280" r="1.5" fill="rgba(255,180,80,0.5)"/>
+          <circle cx="850" cy="260" r="1" fill="rgba(255,200,100,0.7)"/><circle cx="1100" cy="310" r="2" fill="rgba(255,130,40,0.5)"/>
+          <circle cx="780" cy="350" r="1.5" fill="rgba(255,160,60,0.4)"/>
+          <!-- Grill/tusuk sate area background -->
+          <rect x="650" y="280" width="580" height="420" rx="30" fill="rgba(40,15,0,0.6)"/>
+          <!-- Grill bars -->
+          <rect x="680" y="300" width="520" height="8" rx="4" fill="#3a2010" opacity="0.8"/>
+          <rect x="680" y="330" width="520" height="8" rx="4" fill="#3a2010" opacity="0.8"/>
+          <rect x="680" y="360" width="520" height="8" rx="4" fill="#3a2010" opacity="0.8"/>
+          <rect x="680" y="390" width="520" height="8" rx="4" fill="#3a2010" opacity="0.8"/>
+          <!-- Grill glow between bars -->
+          <rect x="680" y="308" width="520" height="22" rx="0" fill="rgba(255,80,0,0.08)"/>
+          <rect x="680" y="338" width="520" height="22" rx="0" fill="rgba(255,80,0,0.06)"/>
+          <rect x="680" y="368" width="520" height="22" rx="0" fill="rgba(255,80,0,0.07)"/>
+          <!-- Bakso bakar on skewers -->
+          <!-- Skewer 1 -->
+          <rect x="726" y="260" width="7" height="320" rx="3.5" fill="#8a6a40"/>
+          <circle cx="729" cy="315" r="38" fill="#8b2800"/><circle cx="729" cy="315" r="38" fill="none" stroke="rgba(255,120,40,0.5)" stroke-width="2"/>
+          <circle cx="722" cy="306" r="12" fill="rgba(255,160,80,0.3)"/>
+          <!-- Char marks on bakso -->
+          <path d="M710 300 Q730 308 750 300" stroke="rgba(20,10,0,0.6)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M712 318 Q728 324 746 318" stroke="rgba(20,10,0,0.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="729" cy="395" r="32" fill="#7a2200"/><circle cx="724" cy="387" r="9" fill="rgba(255,140,60,0.25)"/>
+          <path d="M713 382 Q729 390 745 382" stroke="rgba(20,10,0,0.5)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="729" cy="468" r="28" fill="#8b2800"/>
+          <!-- Skewer 2 -->
+          <rect x="840" y="255" width="7" height="325" rx="3.5" fill="#8a6a40"/>
+          <circle cx="843" cy="310" r="40" fill="#9a3000"/><circle cx="838" cy="300" r="13" fill="rgba(255,170,90,0.3)"/>
+          <path d="M824 296 Q842 304 860 296" stroke="rgba(20,10,0,0.55)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="843" cy="395" r="34" fill="#882800"/><circle cx="838" cy="386" r="10" fill="rgba(255,155,70,0.25)"/>
+          <circle cx="843" cy="472" r="30" fill="#952e00"/>
+          <!-- Skewer 3 -->
+          <rect x="958" y="258" width="7" height="320" rx="3.5" fill="#8a6a40"/>
+          <circle cx="961" cy="313" r="37" fill="#8b2800"/><circle cx="956" cy="304" r="11" fill="rgba(255,160,80,0.3)"/>
+          <circle cx="961" cy="393" r="33" fill="#7d2400"/>
+          <circle cx="961" cy="466" r="29" fill="#8b2800"/>
+          <!-- Skewer 4 -->
+          <rect x="1070" y="262" width="7" height="318" rx="3.5" fill="#8a6a40"/>
+          <circle cx="1073" cy="318" r="35" fill="#922e00"/><circle cx="1068" cy="309" r="10" fill="rgba(255,158,75,0.28)"/>
+          <circle cx="1073" cy="396" r="31" fill="#7f2600"/>
+          <circle cx="1073" cy="468" r="27" fill="#902c00"/>
+          <!-- Flames -->
+          <path d="M700 580 Q720 540 730 510 Q740 480 750 460 Q755 490 750 520 Q760 495 770 470 Q778 500 770 535 Q785 510 795 490 Q797 520 785 550 Q800 525 812 505 Q812 535 800 565 Z" fill="rgba(255,100,10,0.6)" filter="url(#fireBlur)"/>
+          <path d="M870 570 Q890 535 900 505 Q912 480 920 460 Q924 488 918 518 Q928 494 938 470 Q944 498 936 528 Q950 505 960 486 Q960 514 948 542 Z" fill="rgba(255,80,5,0.55)" filter="url(#fireBlur)"/>
+          <!-- Kecap sauce dripping -->
+          <path d="M729 353 Q732 370 729 390" stroke="rgba(40,10,0,0.8)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M843 348 Q846 365 843 385" stroke="rgba(40,10,0,0.8)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <!-- Wijen sprinkle -->
+          <circle cx="745" cy="310" r="2" fill="#f0e080"/><circle cx="718" cy="320" r="1.5" fill="#f0e080"/>
+          <circle cx="740" cy="330" r="2" fill="#f0e080"/><circle cx="858" cy="305" r="2" fill="#f0e080"/>
+          <!-- Background elements -->
+          <ellipse cx="200" cy="400" rx="80" ry="80" fill="rgba(180,50,0,0.1)" filter="url(#blur3)"/>
+          <ellipse cx="1380" cy="200" rx="60" ry="60" fill="rgba(200,80,0,0.08)" filter="url(#blur3)"/>
+          <ellipse cx="380" cy="600" rx="280" ry="160" fill="rgba(0,0,0,0.5)" filter="url(#blur3)"/>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <!-- SLIDE 4: Mie Goreng Spesial -->
+    <div class="hero-slide" data-slide="4">
+      <div class="hero-slide-bg" style="background:#0f0a00">
+        <svg class="slide-svg-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg4" cx="68%" cy="42%"><stop offset="0%" stop-color="#2a1a00"/><stop offset="100%" stop-color="#080500"/></radialGradient>
+            <radialGradient id="plateG" cx="50%" cy="30%"><stop offset="0%" stop-color="#f8f5f0"/><stop offset="100%" stop-color="#ddd8cc"/></radialGradient>
+            <filter id="blur4"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <rect width="1440" height="900" fill="url(#bg4)"/>
+          <ellipse cx="940" cy="440" rx="460" ry="340" fill="rgba(200,120,0,0.09)" filter="url(#blur4)"/>
+          <!-- Bokeh -->
+          <circle cx="180" cy="160" r="3" fill="rgba(255,180,60,0.4)"/><circle cx="380" cy="90" r="2" fill="rgba(255,200,80,0.3)"/>
+          <circle cx="1320" cy="200" r="4" fill="rgba(255,160,40,0.35)"/><circle cx="1100" cy="710" r="3" fill="rgba(255,140,30,0.25)"/>
+          <!-- Shadow plate -->
+          <ellipse cx="940" cy="585" rx="300" ry="55" fill="rgba(0,0,0,0.45)"/>
+          <!-- Plate (piring datar) -->
+          <ellipse cx="940" cy="530" rx="295" ry="50" fill="#e8e0d0"/>
+          <ellipse cx="940" cy="380" rx="290" ry="48" fill="url(#plateG)"/>
+          <path d="M650 382 Q650 535 940 560 Q1230 535 1230 382 L1230 375 Q1225 350 940 342 Q655 350 650 375 Z" fill="url(#plateG)"/>
+          <!-- Plate rim -->
+          <ellipse cx="940" cy="376" rx="288" ry="46" fill="none" stroke="rgba(200,190,170,0.8)" stroke-width="8"/>
+          <ellipse cx="940" cy="376" rx="280" ry="42" fill="none" stroke="rgba(220,210,190,0.4)" stroke-width="2"/>
+          <!-- Mie goreng (fried noodles - darker, more savory) -->
+          <path d="M730 378 Q770 350 810 378 Q850 402 890 375 Q930 350 970 375 Q1010 400 1050 375 Q1090 352 1130 375 Q1160 392 1150 378" stroke="#8B5E0A" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M740 392 Q780 368 820 392 Q860 415 900 392 Q940 368 980 392 Q1020 415 1060 392 Q1098 370 1138 392" stroke="#7A520A" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+          <path d="M748 405 Q785 383 822 405 Q860 426 898 405 Q936 384 974 405 Q1012 424 1050 405 Q1086 386 1124 405" stroke="#906414" stroke-width="6" fill="none" stroke-linecap="round"/>
+          <path d="M754 418 Q790 397 826 418 Q862 438 898 418 Q934 398 970 418 Q1006 436 1042 418 Q1075 402 1110 418" stroke="#7e5610" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+          <path d="M760 430 Q795 412 830 430 Q864 448 898 430 Q932 412 966 430 Q1000 446 1034 430 Q1065 416 1098 430" stroke="#8c6218" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <!-- Ayam suwir -->
+          <ellipse cx="880" cy="370" rx="50" ry="18" fill="#c87820" opacity="0.9"/>
+          <ellipse cx="878" cy="368" rx="47" ry="16" fill="#d88428"/>
+          <ellipse cx="1010" cy="374" rx="42" ry="15" fill="#c87820"/>
+          <ellipse cx="1008" cy="372" rx="39" ry="13" fill="#d48030"/>
+          <!-- Telur ceplok -->
+          <ellipse cx="840" cy="363" rx="32" ry="22" fill="rgba(255,255,240,0.95)"/>
+          <circle cx="840" cy="363" r="14" fill="#f0a020"/>
+          <circle cx="836" cy="359" r="5" fill="rgba(255,220,100,0.6)"/>
+          <!-- Daun bawang -->
+          <ellipse cx="960" cy="360" rx="5" ry="22" fill="#3a8a20" transform="rotate(25,960,360)"/>
+          <ellipse cx="975" cy="358" rx="4" ry="18" fill="#3a8a20" transform="rotate(15,975,358)"/>
+          <ellipse cx="1065" cy="365" rx="4" ry="20" fill="#2e7a18" transform="rotate(-20,1065,365)"/>
+          <!-- Cabai merah iris -->
+          <ellipse cx="810" cy="370" rx="16" ry="5" fill="#d02818" transform="rotate(-30,810,370)"/>
+          <ellipse cx="1090" cy="368" rx="14" ry="4.5" fill="#cc2414" transform="rotate(20,1090,368)"/>
+          <!-- Kecap drizzle art -->
+          <path d="M870 360 Q900 348 930 360 Q950 368 960 358" stroke="rgba(30,15,0,0.75)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Emping/kerupuk -->
+          <ellipse cx="1140" cy="370" rx="20" ry="28" fill="rgba(240,220,150,0.85)" transform="rotate(-10,1140,370)"/>
+          <path d="M1127 355 Q1140 348 1155 355 Q1162 362 1155 370 Q1140 376 1127 370 Z" fill="rgba(255,240,170,0.5)"/>
+          <!-- Sumpit & sendok -->
+          <rect x="640" y="338" width="5" height="235" rx="2.5" fill="#c09060" transform="rotate(-16,642,445)"/>
+          <rect x="657" y="332" width="5" height="235" rx="2.5" fill="#b08050" transform="rotate(-13,659,440)"/>
+          <ellipse cx="1210" cy="460" rx="20" ry="13" fill="#e8e0d0" transform="rotate(35,1210,460)"/>
+          <rect x="1216" y="450" width="7" height="65" rx="3.5" fill="#d8d0c0" transform="rotate(35,1220,455)"/>
+          <!-- Background scatter -->
+          <ellipse cx="300" cy="280" rx="55" ry="55" fill="#c87818" opacity="0.1" filter="url(#blur4)"/>
+          <ellipse cx="380" cy="600" rx="285" ry="165" fill="rgba(0,0,0,0.5)" filter="url(#blur4)"/>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <!-- SLIDE 5: Family vibes - semua menu di meja -->
+    <div class="hero-slide" data-slide="5">
+      <div class="hero-slide-bg" style="background:#0a0a0a">
+        <svg class="slide-svg-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <radialGradient id="bg5" cx="55%" cy="50%"><stop offset="0%" stop-color="#1f0e00"/><stop offset="100%" stop-color="#050505"/></radialGradient>
+            <radialGradient id="tableG" cx="50%" cy="20%"><stop offset="0%" stop-color="#5a3510"/><stop offset="100%" stop-color="#3a2008"/></radialGradient>
+            <filter id="blur5"><feGaussianBlur stdDeviation="5"/></filter>
+            <filter id="softshadow"><feGaussianBlur stdDeviation="8"/></filter>
+          </defs>
+          <rect width="1440" height="900" fill="url(#bg5)"/>
+          <!-- Warm restaurant lighting atmosphere -->
+          <ellipse cx="720" cy="0" rx="500" ry="350" fill="rgba(255,160,60,0.1)" filter="url(#blur5)"/>
+          <ellipse cx="960" cy="450" rx="550" ry="350" fill="rgba(180,80,0,0.07)" filter="url(#blur5)"/>
+          <!-- Bokeh lights -->
+          <circle cx="200" cy="180" r="4" fill="rgba(255,180,80,0.45)"/><circle cx="420" cy="120" r="3" fill="rgba(255,200,100,0.35)"/>
+          <circle cx="1300" cy="160" r="5" fill="rgba(255,160,60,0.4)"/><circle cx="1100" cy="730" r="4" fill="rgba(255,140,50,0.3)"/>
+          <circle cx="80" cy="650" r="6" fill="rgba(255,100,20,0.2)"/><circle cx="650" cy="80" r="3" fill="rgba(255,200,120,0.3)"/>
+          <circle cx="1380" cy="480" r="4" fill="rgba(255,150,50,0.25)"/>
+          <!-- Table surface -->
+          <path d="M350 620 Q720 580 1100 620 L1140 900 L310 900 Z" fill="url(#tableG)"/>
+          <path d="M350 620 Q720 580 1100 620" stroke="rgba(255,200,100,0.15)" stroke-width="2" fill="none"/>
+          <!-- Table wood grain lines -->
+          <path d="M400 650 Q720 628 1050 650" stroke="rgba(255,255,255,0.04)" stroke-width="1.5" fill="none"/>
+          <path d="M380 690 Q720 668 1070 690" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" fill="none"/>
+          <!-- BOWL 1 - Bakso (left) -->
+          <ellipse cx="720" cy="615" rx="120" ry="22" fill="rgba(0,0,0,0.4)" filter="url(#softshadow)"/>
+          <path d="M600 530 Q610 615 720 632 Q830 615 840 530 L840 524 Q830 505 720 498 Q610 505 600 524 Z" fill="#e8e0d0"/>
+          <ellipse cx="720" cy="524" rx="118" ry="20" fill="#b83010"/>
+          <circle cx="688" cy="518" r="24" fill="#c83818"/><circle cx="685" cy="511" r="7" fill="rgba(255,160,100,0.3)"/>
+          <circle cx="748" cy="516" r="20" fill="#b03010"/>
+          <circle cx="800" cy="520" r="18" fill="#c03818"/>
+          <path d="M675 514 Q703 505 730 514 Q757 522 785 514" stroke="#f0c840" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="710" cy="508" r="5" fill="#2a7010"/><circle cx="730" cy="504" r="4" fill="#348020"/>
+          <!-- BOWL 2 - Mie Ayam (center-right) -->
+          <ellipse cx="980" cy="595" rx="115" ry="20" fill="rgba(0,0,0,0.35)" filter="url(#softshadow)"/>
+          <path d="M865 515 Q875 596 980 612 Q1085 596 1095 515 L1095 509 Q1086 491 980 484 Q874 491 865 509 Z" fill="#eee8d8"/>
+          <ellipse cx="980" cy="509" rx="113" ry="19" fill="#c09020"/>
+          <path d="M876 507 Q920 487 964 507 Q1008 525 1052 507 Q1082 494 1074 507" stroke="#e8b830" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M880 518 Q924 500 968 518 Q1012 535 1056 518" stroke="#d4a428" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <ellipse cx="960" cy="499" rx="36" ry="12" fill="#9a6020"/>
+          <ellipse cx="1010" cy="502" rx="28" ry="10" fill="#8e5820"/>
+          <ellipse cx="916" cy="500" rx="22" ry="8" fill="#2a7010" transform="rotate(-10,916,500)"/>
+          <!-- Small bowl - Es Teh -->
+          <ellipse cx="840" cy="602" rx="55" ry="10" fill="rgba(0,0,0,0.3)" filter="url(#softshadow)"/>
+          <rect x="790" y="545" width="100" height="62" rx="10" fill="#1a3a6a"/>
+          <rect x="793" y="548" width="94" height="36" rx="6" fill="#1e4a8a"/>
+          <!-- Ice cubes in glass -->
+          <rect x="804" y="556" width="18" height="18" rx="3" fill="rgba(200,230,255,0.7)" transform="rotate(10,813,565)"/>
+          <rect x="826" y="554" width="16" height="16" rx="3" fill="rgba(210,235,255,0.65)" transform="rotate(-5,834,562)"/>
+          <rect x="847" y="558" width="17" height="17" rx="3" fill="rgba(195,225,255,0.7)" transform="rotate(8,855,566)"/>
+          <!-- Tea color -->
+          <rect x="793" y="570" width="94" height="14" rx="0" fill="rgba(180,120,40,0.6)"/>
+          <rect x="790" y="545" width="100" height="62" rx="10" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+          <!-- Straw -->
+          <rect x="860" y="530" width="6" height="40" rx="3" fill="#e8f0ff" transform="rotate(-5,863,550)"/>
+          <!-- Kerupuk plate -->
+          <ellipse cx="1150" cy="580" rx="60" ry="12" fill="rgba(0,0,0,0.25)" filter="url(#softshadow)"/>
+          <ellipse cx="1150" cy="568" rx="58" ry="10" fill="#ddd8c8"/>
+          <ellipse cx="1148" cy="552" rx="50" ry="40" fill="#f0ece0" transform="scaleY(0.5) translateY(-50%)"/>
+          <!-- Kerupuk stack -->
+          <ellipse cx="1148" cy="555" rx="45" ry="12" fill="rgba(240,220,150,0.9)"/>
+          <ellipse cx="1148" cy="548" rx="40" ry="11" fill="rgba(245,228,160,0.9)"/>
+          <ellipse cx="1148" cy="542" rx="35" ry="10" fill="rgba(248,232,165,0.9)"/>
+          <ellipse cx="1148" cy="537" rx="30" ry="9" fill="rgba(245,228,158,0.9)"/>
+          <!-- Sambal -->
+          <ellipse cx="1080" cy="608" rx="35" ry="8" fill="rgba(0,0,0,0.2)" filter="url(#softshadow)"/>
+          <ellipse cx="1080" cy="600" rx="34" ry="8" fill="#c82010"/>
+          <ellipse cx="1080" cy="596" rx="30" ry="6" fill="#d82818"/>
+          <ellipse cx="1080" cy="593" rx="25" ry="4.5" fill="#e03020"/>
+          <!-- Chopsticks on table -->
+          <rect x="840" y="636" width="200" height="5" rx="2.5" fill="#c09060" transform="rotate(-3,940,638)"/>
+          <rect x="845" y="646" width="195" height="5" rx="2.5" fill="#b08050" transform="rotate(-3,942,648)"/>
+          <!-- Background scatter -->
+          <ellipse cx="380" cy="600" rx="280" ry="160" fill="rgba(0,0,0,0.52)" filter="url(#blur5)"/>
+        </svg>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-tag"><i class="fa-solid fa-star"></i> Cita Rasa Autentik Sejak 1998</div>
+      <h1 class="hero-title">Nikmatnya <span class="accent">Bakso & Mie Ayam</span> yang Tak Terlupakan</h1>
+      <p class="hero-desc">Dimasak dari bahan segar pilihan dengan resep rahasia turun-temurun. Satu suapan, seribu kenangan.</p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn-primary"><i class="fa-solid fa-bowl-food"></i> Pesan Sekarang</a>
+        <a href="#why" class="btn-secondary"><i class="fa-solid fa-play"></i> Tentang Kami</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-dots" id="hero-dots"></div>
+  <div class="hero-arrows">
+    <button class="hero-arrow" onclick="heroArrow(-1)"><i class="fa-solid fa-chevron-up"></i></button>
+    <button class="hero-arrow" onclick="heroArrow(1)"><i class="fa-solid fa-chevron-down"></i></button>
+  </div>
+
+  <!-- Floating food decoration -->
+  <div id="hero-food-layer" style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden"></div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="section-header reveal" style="text-align:center">
+    <div class="section-tag"><i class="fa-solid fa-award"></i> Keunggulan Kami</div>
+    <h2 class="section-title">Kenapa Memilih <span class="accent">Pak Sariman?</span></h2>
+    <p class="section-desc" style="margin:0 auto">Lebih dari 30 tahun menghadirkan cita rasa terbaik yang tidak pernah mengecewakan.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal" style="transition-delay:0s"><div class="why-icon"><i class="fa-solid fa-fire-flame-curved"></i></div><div class="why-title">Rasa Autentik</div><div class="why-desc">Resep asli warisan keluarga sejak 1993. Tidak pernah berubah karena kualitas adalah segalanya.</div></div>
+    <div class="why-card reveal" style="transition-delay:.1s"><div class="why-icon"><i class="fa-solid fa-tag"></i></div><div class="why-title">Harga Terjangkau</div><div class="why-desc">Nikmat dan kenyang dengan harga yang bersahabat. Cocok untuk semua kalangan dan anak kost.</div></div>
+    <div class="why-card reveal" style="transition-delay:.2s"><div class="why-icon"><i class="fa-solid fa-map-location-dot"></i></div><div class="why-title">Banyak Cabang</div><div class="why-desc">Hadir di 6 kota di Jawa Tengah — Purwokerto, Kroya, Cilacap, Adipala, Binangun & Sokaraja.</div></div>
+    <div class="why-card reveal" style="transition-delay:.3s"><div class="why-icon"><i class="fa-solid fa-bolt"></i></div><div class="why-title">Pelayanan Cepat</div><div class="why-desc">Murah senyum, ramah, dan super cepat. Karena kami tahu waktu Anda sangat berharga.</div></div>
+    <div class="why-card reveal" style="transition-delay:.4s"><div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="why-title">Bahan Berkualitas</div><div class="why-desc">Bakso daging sapi asli, bahan segar setiap pagi. Tanpa pengawet berlebih, dijamin halal.</div></div>
+    <div class="why-card reveal" style="transition-delay:.5s"><div class="why-icon"><i class="fa-solid fa-face-smile"></i></div><div class="why-title">Tempat Nyaman</div><div class="why-desc">Luas, bersih, ada playground & mushola. Cocok untuk makan bersama keluarga dan teman.</div></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-card reveal"><div class="stat-icon"><i class="fa-solid fa-users"></i></div><div class="stat-number" data-target="50000">0</div><div class="stat-label">Pelanggan Setia</div></div>
+    <div class="stat-card reveal" style="transition-delay:.12s"><div class="stat-icon"><i class="fa-solid fa-star"></i></div><div class="stat-number" data-target="4.6" data-decimal="1">0</div><div class="stat-label">Rating Google Maps</div></div>
+    <div class="stat-card reveal" style="transition-delay:.24s"><div class="stat-icon"><i class="fa-solid fa-store"></i></div><div class="stat-number" data-target="6">0</div><div class="stat-label">Cabang Aktif</div></div>
+    <div class="stat-card reveal" style="transition-delay:.36s"><div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="stat-number" data-target="32">0</div><div class="stat-label">Tahun Pengalaman</div></div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-header reveal">
+    <div class="section-tag">Menu Pilihan</div>
+    <h2 class="section-title">Temukan <span class="accent">Menu Favoritmu</span></h2>
+    <p class="section-desc">Semua menu dimasak fresh setiap hari dengan bahan berkualitas pilihan.</p>
+  </div>
+
+  <nav class="category-nav" id="cat-nav">
+    <button class="cat-btn active" data-target="sec-bestseller"><i class="fa-solid fa-fire" style="margin-right:6px;color:var(--orange)"></i>Best Seller</button>
+    <button class="cat-btn" data-target="sec-bakso"><i class="fa-solid fa-bowl-food" style="margin-right:6px"></i>Bakso</button>
+    <button class="cat-btn" data-target="sec-mieayam"><i class="fa-solid fa-utensils" style="margin-right:6px"></i>Mie Ayam</button>
+    <button class="cat-btn" data-target="sec-minuman"><i class="fa-solid fa-mug-hot" style="margin-right:6px"></i>Minuman</button>
+    <button class="cat-btn" data-target="sec-addon"><i class="fa-solid fa-plus-circle" style="margin-right:6px"></i>Add-On</button>
+    <button class="cat-btn" data-target="sec-jus"><i class="fa-solid fa-blender" style="margin-right:6px"></i>Jus</button>
+  </nav>
+
+  <!-- Best Seller -->
+  <div class="menu-section-block" id="sec-bestseller">
+    <div class="menu-section-title"><span><i class="fa-solid fa-fire"></i></span>Best Seller</div>
+    <div class="menu-grid" id="grid-bestseller"></div>
+  </div>
+  <!-- Bakso -->
+  <div class="menu-section-block" id="sec-bakso">
+    <div class="menu-section-title"><span><i class="fa-solid fa-bowl-food"></i></span>Bakso</div>
+    <div class="menu-grid" id="grid-bakso"></div>
+  </div>
+  <!-- Mie Ayam -->
+  <div class="menu-section-block" id="sec-mieayam">
+    <div class="menu-section-title"><span><i class="fa-solid fa-utensils"></i></span>Mie Ayam</div>
+    <div class="menu-grid" id="grid-mieayam"></div>
+  </div>
+  <!-- Minuman -->
+  <div class="menu-section-block" id="sec-minuman">
+    <div class="menu-section-title"><span><i class="fa-solid fa-mug-hot"></i></span>Minuman</div>
+    <div class="menu-grid" id="grid-minuman"></div>
+  </div>
+  <!-- Add-On -->
+  <div class="menu-section-block" id="sec-addon">
+    <div class="menu-section-title"><span><i class="fa-solid fa-plus-circle"></i></span>Add-On</div>
+    <div class="menu-grid" id="grid-addon"></div>
+  </div>
+  <!-- Jus -->
+  <div class="menu-section-block" id="sec-jus">
+    <div class="menu-section-title"><span><i class="fa-solid fa-blender"></i></span>Jus</div>
+    <div class="menu-grid" id="grid-jus"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section id="testi">
+  <div class="section-header reveal" style="text-align:center">
+    <div class="section-tag">Testimoni Pelanggan</div>
+    <h2 class="section-title">Apa Kata <span class="accent">Mereka?</span></h2>
+  </div>
+  <div class="testi-slider reveal">
+    <div class="testi-track" id="testi-track"></div>
+  </div>
+  <div class="testi-controls" id="testi-dots"></div>
+</section>
+
+<!-- LOCATION -->
+<section id="location">
+  <div class="section-header reveal">
+    <div class="section-tag">Lokasi Kami</div>
+    <h2 class="section-title">Temukan Cabang <span class="accent">Terdekat</span></h2>
+    <p class="section-desc">Kami hadir di berbagai kota di Jawa Tengah untuk melayani Anda.</p>
+  </div>
+  <div class="location-grid">
+    <div class="branch-list" id="branch-list">
+      <!-- JS generated -->
+    </div>
+    <div class="map-container reveal-right">
+      <iframe id="map-frame" src="https://www.google.com/maps?q=-7.4308,109.2479&z=17&output=embed" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- JAM OPERASIONAL -->
+<section id="jam">
+  <div class="section-header reveal" style="text-align:center">
+    <div class="section-tag">Jam Buka</div>
+    <h2 class="section-title">Jam <span class="accent">Operasional</span></h2>
+  </div>
+  <div class="jam-grid">
+    <div class="jam-card reveal"><div class="jam-icon"><i class="fa-regular fa-clock"></i></div><div class="jam-info"><div class="jam-day">Senin – Jumat</div><div class="jam-time">07.00 – 21.00</div><div class="jam-status">Buka Hari Ini</div></div></div>
+    <div class="jam-card reveal" style="transition-delay:.1s"><div class="jam-icon"><i class="fa-solid fa-calendar-week"></i></div><div class="jam-info"><div class="jam-day">Sabtu – Minggu</div><div class="jam-time">07.00 – 22.00</div><div class="jam-note">Buka Lebih Lama</div></div></div>
+    <div class="jam-card reveal" style="transition-delay:.2s"><div class="jam-icon"><i class="fa-solid fa-moon"></i></div><div class="jam-info"><div class="jam-day">Hari Libur Nasional</div><div class="jam-time">08.00 – 20.00</div><div class="jam-note">Tetap Buka!</div></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo-wrap">
+        <img class="footer-logo-img"
+          src="pp.png" alt="Pak Sariman"
+          onerror="this.style.display='none';document.getElementById('footer-logo-fb').style.display='flex'">
+        <div class="footer-logo-fb" id="footer-logo-fb" style="display:none">🍜</div>
+        <div>
+          <div class="footer-brand-name">Bakso & Mie Ayam Ceker<br>Pak Sariman</div>
+          <div class="footer-brand-sub">Purwokerto · Est. 1993</div>
+        </div>
+      </div>
+      <p class="footer-desc">Warung bakso dan mie ayam ceker legendaris Purwokerto sejak 1993. Spesialis bakso daging sapi asli dan urat super. Cita rasa autentik, harga bersahabat, tempat nyaman.</p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/pak.sariman" target="_blank" class="soc-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://wa.me/620811291201" target="_blank" class="soc-link" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="#" class="soc-link" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="#" class="soc-link" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      </div>
+      <div class="footer-orders">
+        <a href="https://shopee.co.id/food" target="_blank" class="order-badge"><i class="fa-solid fa-bag-shopping"></i> ShopeeFood</a>
+        <a href="https://gofood.co.id" target="_blank" class="order-badge"><i class="fa-solid fa-motorcycle"></i> GoFood</a>
+        <a href="https://grab.com/id/food" target="_blank" class="order-badge"><i class="fa-solid fa-car-side"></i> GrabFood</a>
+        <a href="https://wa.me/620811291201" target="_blank" class="order-badge"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Navigasi</div>
+      <div class="footer-links">
+        <a href="#hero" class="foot-link"><i class="fa-solid fa-house"></i>Beranda</a>
+        <a href="#menu" class="foot-link"><i class="fa-solid fa-bowl-food"></i>Menu Kami</a>
+        <a href="#why" class="foot-link"><i class="fa-solid fa-award"></i>Tentang Kami</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-map-pin"></i>Lokasi Cabang</a>
+        <a href="#jam" class="foot-link"><i class="fa-regular fa-clock"></i>Jam Buka</a>
+        <a href="#testi" class="foot-link"><i class="fa-solid fa-star"></i>Ulasan</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Kontak</div>
+      <div class="footer-links">
+        <a href="https://wa.me/620811291201" target="_blank" class="foot-link"><i class="fa-brands fa-whatsapp"></i>0811-291-201</a>
+        <a href="https://www.instagram.com/pak.sariman" target="_blank" class="foot-link"><i class="fa-brands fa-instagram"></i>@pak.sariman</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-location-dot"></i>Purwokerto, Banyumas</a>
+        <a href="#jam" class="foot-link"><i class="fa-regular fa-clock"></i>07.00 – 21.00 WIB</a>
+        <a href="#" class="foot-link"><i class="fa-solid fa-certificate"></i>Halal & Bersih</a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Cabang</div>
+      <div class="footer-links">
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Purwokerto (Pusat)</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Kroya</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Cilacap</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Adipala</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Binangun</a>
+        <a href="#location" class="foot-link"><i class="fa-solid fa-store"></i>Sokaraja</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Bakso & Mie Ayam Ceker Pak Sariman. All rights reserved.</div>
+    <div class="footer-by">Website by <a href="https://wa.me/6288225326247" target="_blank">Rafi Danu Pradita</a> · <a href="https://wa.me/6288225326247" target="_blank" style="color:var(--text-muted);font-weight:400"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i> +62 882-2532-6247</a></div>
+  </div>
+</footer>
+
+<!-- CART FAB -->
+<button id="cart-fab" onclick="openCart()">
+  <i class="fa-solid fa-bag-shopping"></i>
+  <span id="cart-fab-count">0</span>
+</button>
+
+<!-- CART MODAL -->
+<div id="cart-modal">
+  <div class="cart-backdrop" onclick="closeCart()"></div>
+  <div class="cart-panel">
+    <div class="cart-header">
+      <div class="cart-header-title"><i class="fa-solid fa-bag-shopping" style="color:var(--orange);margin-right:10px"></i>Keranjang</div>
+      <button class="cart-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-items" id="cart-items-list">
+      <div class="cart-empty" id="cart-empty">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <p style="font-weight:600">Keranjang Kosong</p>
+        <p style="font-size:.85rem">Tambahkan menu favoritmu dulu!</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cart-footer" style="display:none">
+      <div class="cart-summary">
+        <span class="cart-total-label">Total Pembayaran</span>
+        <span class="cart-total-val" id="cart-total">Rp 0</span>
+      </div>
+      <div class="cart-pay-opts">
+        <div class="cart-pay-label">Metode Pembayaran</div>
+        <div class="pay-options">
+          <div class="pay-opt selected" data-pay="COD" onclick="selectPay(this)">💵 COD</div>
+          <div class="pay-opt" data-pay="Transfer Bank" onclick="selectPay(this)">🏦 Transfer</div>
+          <div class="pay-opt" data-pay="E-Wallet" onclick="selectPay(this)">📱 E-Wallet</div>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">
+        <i class="fa-brands fa-whatsapp"></i>
+        Checkout via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<script>
+/* ============================
+   DATA
+============================ */
+const MENU_DATA = {
+bestseller:[
+  {name:"Mie Ayam Pangsit",desc:"Mie kenyal dengan ayam cincang bumbu khas, pangsit goreng renyah dan sayuran segar.",price:13500,img:"mie2.jpg",badge:"🔥 Best"},
+  {name:"Mie Ayam Ceker",desc:"Mie kenyal dengan ayam cincang bumbu khas, dilengkapi ceker ayam empuk berbumbu.",price:14000,img:"mie3.jpg",badge:"🔥 Best"},
+  {name:"Bakso Telor",desc:"Bakso sapi pilihan berisi telur puyuh, kuah kaldu gurih dan segar.",price:16500,img:"bakso1.jpg",badge:"⭐ Favorit"},
+  {name:"Bakso Pangsit",desc:"Bakso sapi kenyal dengan pangsit rebus, kuah kaldu gurih dan segar.",price:17000,img:"bakso2.jpg",badge:"👑 Top"},
+  {name:"Es Teh",desc:"Teh manis segar, pas dinikmati saat cuaca panas atau saat makan.",price:3000,img:"minum1.jpg",badge:"💧 Segar"},
+],
+
+bakso:[
+  {name:"Bakso Telor",desc:"Bakso sapi pilihan berisi telur puyuh dengan kuah gurih spesial.",price:16500,img:"bakso1.jpg"},
+  {name:"Bakso Pangsit",desc:"Bakso sapi kenyal dengan pangsit rebus dan kuah kaldu gurih.",price:17000,img:"bakso2.jpg"},
+  {name:"Bakso Ceker",desc:"Bakso sapi dengan tambahan ceker ayam empuk berbumbu.",price:17500,img:"bakso3.jpg"},
+  {name:"Bakso Urat Jumbo (Atom)",desc:"Bakso urat jumbo bertekstur kenyal dan gurih.",price:21000,img:"bakso4.jpg"},
+  {name:"Bakso Granat Super",desc:"Bakso super besar isi daging cincang melimpah.",price:21000,img:"bakso5.jpg"},
+  {name:"Bakso Rusuk Jos",desc:"Bakso spesial dengan rusuk sapi empuk dan kuah pekat.",price:30000,img:"bakso6.jpg"},
+  {name:"Bakso Beranak",desc:"Bakso besar berisi bakso kecil di dalamnya.",price:30000,img:"bakso7.jpg"},
+  {name:"Bakso Lava",desc:"Bakso isi sambal pedas lumer di dalam.",price:32000,img:"bakso8.jpg"},
+  {name:"Bakso Keju Moncrot",desc:"Bakso spesial isi keju lumer creamy yang moncrot saat digigit.",price:21000,img:"bakso9.jpg"},
+ 
+ 
+],
+
+mieayam:[
+  {name:"Mie Ayam Biasa / Original",desc:"Mie ayam original dengan topping ayam cincang gurih.",price:11000,img:"mie1.jpg"},
+  {name:"Mie Ayam Pangsit",desc:"Mie ayam dengan tambahan pangsit goreng renyah.",price:13500,img:"mie2.jpg"},
+  {name:"Mie Ayam Ceker",desc:"Mie ayam dengan ceker ayam empuk berbumbu.",price:14000,img:"mie3.jpg"},
+  {name:"Mie Ayam Kepala",desc:"Mie ayam dengan tambahan kepala ayam gurih.",price:15500,img:"mie4.jpg"},
+  {name:"Mie Ayam Bakso",desc:"Perpaduan mie ayam dan bakso sapi spesial.",price:17000,img:"mie6.jpg"},
+  {name:"Mie Ayam Bakso Ceker",desc:"Mie ayam lengkap dengan bakso dan ceker ayam.",price:20000,img:"mie7.jpg"},
+  {name:"Mie Ayam Bakso Pangsit",desc:"Mie ayam dengan bakso dan pangsit gurih.",price:18000,img:"mie8.jpg"},
+ 
+],
+
+minuman:[
+  {name:"Es Teh",desc:"Es teh manis segar pelepas dahaga.",price:3000,img:"minum1.jpg"},
+  {name:"Es Jeruk",desc:"Jeruk segar diperas langsung.",price:5500,img:"minum2.jpg"},
+  {name:"Es Lemon Tea",desc:"Perpaduan teh dan lemon yang menyegarkan.",price:5000,img:"minum3.jpg"},
+  {name:"Air Es",desc:"Air es dingin segar.",price:1000,img:"minum6.jpg"},
+  {name:"Es Milo",desc:"Minuman Milo dingin creamy.",price:9500,img:"minum8.jpg"},
+  {name:"Cappucino Cincau",desc:"Cappucino dengan cincau segar.",price:8500,img:"minum9.jpg"},
+  {name:"Durian Cheese Shake",desc:"Minuman durian creamy dengan keju.",price:15000,img:"minum10.jpg"},
+  {name:"Kopi Panas",desc:"Kopi hitam panas nikmat.",price:3000,img:"minum11.jpg"},
+],
+
+addon:[
+  {name:"Acar",desc:"Tambahan acar segar.",price:1500,img:"addon1.jpg"},
+  {name:"Pangsit",desc:"Tambahan pangsit gurih.",price:1500,img:"addon2.jpg"},
+  {name:"Ceker",desc:"Tambahan ceker ayam empuk.",price:2500,img:"addon3.jpg"},
+],
+
+jus:[
+  {name:"Jus Alpukat",desc:"Jus alpukat creamy segar.",price:10000,img:"jus1.jpg"},
+  {name:"Jus Nanas",desc:"Jus nanas manis asam menyegarkan.",price:8500,img:"jus2.jpg"},
+  {name:"Jus Jambu",desc:"Jus jambu merah segar kaya vitamin.",price:8500,img:"jus3.jpg"},
+  {name:"Jus Jeruk",desc:"Jus jeruk segar tanpa pengawet.",price:8500,img:"jus4.jpg"},
+  {name:"Jus Mangga",desc:"Jus mangga manis legit.",price:9000,img:"jus5.jpg"},
+  {name:"Jus Tomat",desc:"Jus tomat sehat dan segar.",price:8500,img:"jus6.jpg"},
+]
+};
+
+const TESTIMONIALS=[
+  {name:"Rizki Radiyanti",role:"Ulasan Google Maps",text:"Sudah beberapa kali kesini reviewnya selalu sama, enak lezat dan nyaman jg tempatnya.. kali ini ajak orangtua yg sedang mampir ke pwt dan kesannya enak dan pgn nyoba menu lain lagi.. semoga makin jaya bakso mie ayam pak sariman ❤️",stars:5,initial:"R"},
+  {name:"Tiara Misti",role:"Ulasan Google Maps",text:"enak bangettt! andalan aku kalo pengen mie ayam ya langsung ke siniiii. top debest semua ada, mulai dr pangsit acar dll pokonya komplitt kesukaan aku bgttt 🍜❤️",stars:5,initial:"T"},
+  {name:"Laila Nur Aiyah",role:"Ulasan Google Maps",text:"Pelayanan ramah pol, pesen bakso & mi ayam ngga mengecewakan pokoke best poll 🫶",stars:5,initial:"L"},
+  {name:"Onyour Study",role:"Ulasan Google Maps",text:"tempatnya luas dan nyaman, makanannya enakk, minumannya jg terutama es teler es creamnya beuhh recommend bgttt, pelayannya murah senyum ramah dan pelayannya juga super cepet, tempat bersihh, fasilitas lengkap, ada playground, mushola, dan kamar mandinya super duper bersih dan wangi sumpahh, udah langganan jadi mie terenak di pwt 🫰",stars:5,initial:"O"},
+  {name:"Rini Indah Lestari",role:"Ulasan Google Maps",text:"enakk bangett, langganan dari semester 1 kuliah 💗💗💗 enak banget harga terjangkau cocok untuk anak kost ✨✨✨✨✨",stars:5,initial:"R"},
+  {name:"Daisy Candace",role:"Ulasan Google Maps",text:"Pertama kali makan di sini. Baksonya enak, kuahnya segar, pangsitnya enak. Tempatnya nyaman, luas, dan cukup bersih. Ada banyak tempat duduk (ada lesehan juga).",stars:5,initial:"D"},
+];
+
+/* ── CABANG ── */
+const BRANCHES = [
+  {
+    name: "Purwokerto (Pusat)",
+    address: "Purwokerto, Banyumas, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Purwokerto&output=embed&z=16"
+  },
+  {
+    name: "Cabang Kroya",
+    address: "Kroya, Cilacap, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Kroya&output=embed&z=15"
+  },
+  {
+    name: "Cabang Cilacap",
+    address: "Cilacap Tengah, Cilacap, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Cilacap&output=embed&z=15"
+  },
+  {
+    name: "Cabang Adipala",
+    address: "Adipala, Cilacap, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Adipala&output=embed&z=15"
+  },
+  {
+    name: "Cabang Binangun",
+    address: "Binangun, Cilacap, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Binangun&output=embed&z=15"
+  },
+  {
+    name: "Cabang Sokaraja",
+    address: "Sokaraja, Banyumas, Jawa Tengah",
+    mapSrc: "https://maps.google.com/maps?q=Bakso+dan+Mie+Ayam+Ceker+Pak+Sariman+Sokaraja&output=embed&z=15"
+  }
+];
+
+/* ============================
+   STATE
+============================ */
+let cart=[];
+let selectedPay="COD";
+const WHATSAPP="6288225326247";
+
+/* ============================
+   LOADER
+============================ */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+  },2200);
+});
+
+/* ============================
+   THEME
+============================ */
+function toggleTheme(){
+  const html=document.documentElement;
+  const isDark=html.dataset.theme==='dark';
+  html.dataset.theme=isDark?'light':'dark';
+  document.getElementById('theme-icon').className=isDark?'fa-solid fa-sun':'fa-solid fa-moon';
+}
+
+/* ============================
+   MOBILE MENU
+============================ */
+function toggleMobileMenu(){
+  const hb=document.getElementById('hamburger');
+  const mm=document.getElementById('mobile-menu');
+  hb.classList.toggle('open');
+  mm.classList.toggle('open');
+}
+function closeMobileMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+/* ============================
+   HERO SLIDER
+============================ */
+let heroIdx=0;
+const slides=document.querySelectorAll('.hero-slide');
+const dotsContainer=document.getElementById('hero-dots');
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='hero-dot'+(i===0?' active':'');
+  d.onclick=()=>goHero(i);
+  dotsContainer.appendChild(d);
+});
+function goHero(n){
+  slides[heroIdx].classList.remove('active');
+  document.querySelectorAll('.hero-dot')[heroIdx].classList.remove('active');
+  heroIdx=(n+slides.length)%slides.length;
+  slides[heroIdx].classList.add('active');
+  document.querySelectorAll('.hero-dot')[heroIdx].classList.add('active');
+}
+function heroArrow(dir){goHero(heroIdx+dir)}
+setInterval(()=>goHero(heroIdx+1),5500);
+// Touch swipe hero
+let heroTouchX=null;
+document.getElementById('hero').addEventListener('touchstart',e=>{heroTouchX=e.touches[0].clientX},{passive:true});
+document.getElementById('hero').addEventListener('touchend',e=>{
+  if(heroTouchX===null)return;
+  const dx=e.changedTouches[0].clientX-heroTouchX;
+  if(Math.abs(dx)>50)goHero(heroIdx+(dx<0?1:-1));
+  heroTouchX=null;
+});
+
+/* ============================
+   MENU RENDER
+============================ */
+function fmtPrice(p){return'Rp '+p.toLocaleString('id-ID')}
+function renderCard(item,cat){
+  return`<div class="menu-card reveal">
+    <div class="menu-card-img">
+      <img src="${item.img}" alt="${item.name}" loading="lazy" onerror="this.style.background='linear-gradient(135deg,var(--dark3),var(--dark4))';this.style.display='block'">
+      ${item.badge?`<div class="menu-card-badge">${item.badge}</div>`:''}
+    </div>
+    <div class="menu-card-body">
+      <div class="menu-card-name">${item.name}</div>
+      <div class="menu-card-desc">${item.desc}</div>
+      <div class="menu-card-footer">
+        <div class="menu-price">${fmtPrice(item.price)}</div>
+        <button class="add-btn" onclick='addToCart(${JSON.stringify(item)})' title="Tambah ke keranjang"><i class="fa-solid fa-plus"></i></button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderMenus(){
+  const mapping={
+    'grid-bestseller':MENU_DATA.bestseller,
+    'grid-bakso':MENU_DATA.bakso,
+    'grid-mieayam':MENU_DATA.mieayam,
+    'grid-minuman':MENU_DATA.minuman,
+    'grid-addon':MENU_DATA.addon,
+    'grid-jus':MENU_DATA.jus,
+  };
+  for(const[id,data] of Object.entries(mapping)){
+    const cat=id.replace('grid-','');
+    document.getElementById(id).innerHTML=data.map(i=>renderCard(i,cat)).join('');
+  }
+  initReveal();
+}
+
+/* ============================
+   CART
+============================ */
+function addToCart(item){
+  const ex=cart.find(c=>c.name===item.name);
+  if(ex){ex.qty++;}
+  else{cart.push({...item,qty:1})}
+  updateCartUI();
+  showToast(`<i class="fa-solid fa-check"></i> ${item.name} ditambahkan!`);
+}
+function removeFromCart(name){
+  cart=cart.filter(c=>c.name!==name);
+  updateCartUI();
+  renderCartItems();
+}
+function changeQty(name,delta){
+  const item=cart.find(c=>c.name===name);
+  if(!item)return;
+  item.qty+=delta;
+  if(item.qty<=0)removeFromCart(name);
+  else{updateCartUI();renderCartItems();}
+}
+function updateCartUI(){
+  const total=cart.reduce((s,c)=>s+c.qty,0);
+  const badge=document.getElementById('nav-badge');
+  const fab=document.getElementById('cart-fab');
+  const fabCount=document.getElementById('cart-fab-count');
+  badge.textContent=total;
+  fabCount.textContent=total;
+  if(total>0){badge.classList.add('show');fab.classList.add('show');}
+  else{badge.classList.remove('show');fab.classList.remove('show');}
+}
+function renderCartItems(){
+  const list=document.getElementById('cart-items-list');
+  const empty=document.getElementById('cart-empty');
+  const footer=document.getElementById('cart-footer');
+  const totalEl=document.getElementById('cart-total');
+  if(cart.length===0){
+    list.innerHTML='';list.appendChild(empty);
+    footer.style.display='none';
+    empty.style.display='flex';
+    return;
+  }
+  empty.style.display='none';
+  footer.style.display='block';
+  const subtotal=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  totalEl.textContent=fmtPrice(subtotal);
+  list.innerHTML=cart.map(item=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.style.background='var(--dark3)'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${fmtPrice(item.price)}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty('${item.name}',-1)"><i class="fa-solid fa-minus" style="font-size:.7rem"></i></button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.name}',1)"><i class="fa-solid fa-plus" style="font-size:.7rem"></i></button>
+          <button class="qty-btn" onclick="removeFromCart('${item.name}')" style="margin-left:auto;background:rgba(239,68,68,.15);color:#ef4444"><i class="fa-solid fa-trash" style="font-size:.7rem"></i></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function openCart(){
+  renderCartItems();
+  document.getElementById('cart-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCart(){
+  document.getElementById('cart-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function selectPay(el){
+  document.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPay=el.dataset.pay;
+}
+function checkout(){
+  if(cart.length===0){showToast('<i class="fa-solid fa-warning"></i> Keranjang masih kosong!');return;}
+  const subtotal=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  let msg=`*Pesanan Baru – Mie Ayam & Bakso Pak Sariman*\n\n`;
+  msg+=`*Detail Pesanan:*\n`;
+  cart.forEach(i=>{msg+=`• ${i.name} x${i.qty} = ${fmtPrice(i.price*i.qty)}\n`});
+  msg+=`\n*Total: ${fmtPrice(subtotal)}*`;
+  msg+=`\n*Pembayaran: ${selectedPay}*`;
+  msg+=`\n\nMohon konfirmasi pesanan saya. Terima kasih! 🙏`;
+  const url=`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  window.open(url,'_blank');
+  cart=[];updateCartUI();closeCart();
+  showToast('<i class="fa-brands fa-whatsapp"></i> Pesanan dikirim ke WhatsApp!');
+}
+
+/* ============================
+   CATEGORY NAV
+============================ */
+function initCatNav(){
+  const btns=document.querySelectorAll('.cat-btn');
+  btns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const target=document.getElementById(btn.dataset.target);
+      if(target){
+        const offset=document.getElementById('cat-nav').offsetHeight+70;
+        const top=target.getBoundingClientRect().top+window.scrollY-offset-10;
+        window.scrollTo({top,behavior:'smooth'});
+      }
+    });
+  });
+  // Active on scroll
+  window.addEventListener('scroll',()=>{
+    const sections=['sec-bestseller','sec-bakso','sec-mieayam','sec-minuman','sec-addon','sec-jus'];
+    const catNavH=document.getElementById('cat-nav')?.offsetHeight||48;
+    const offset=70+catNavH+20;
+    let current=sections[0];
+    sections.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el&&el.getBoundingClientRect().top<=offset+60)current=id;
+    });
+    btns.forEach(btn=>{
+      btn.classList.toggle('active',btn.dataset.target===current);
+    });
+  },{passive:true});
+}
+
+/* ============================
+   TESTIMONIALS
+============================ */
+let testiIdx=0;
+function renderTestimonials(){
+  const track=document.getElementById('testi-track');
+  const dots=document.getElementById('testi-dots');
+  track.innerHTML=TESTIMONIALS.map(t=>`
+    <div class="testi-card">
+      <div class="testi-stars">${'★'.repeat(t.stars)}</div>
+      <p class="testi-text">"${t.text}"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">${t.initial}</div>
+        <div><div class="testi-name">${t.name}</div><div class="testi-role">${t.role}</div></div>
+      </div>
+    </div>
+  `).join('');
+  dots.innerHTML=TESTIMONIALS.map((_,i)=>`<div class="testi-dot${i===0?' active':''}" onclick="goTesti(${i})"></div>`).join('');
+}
+function goTesti(n){
+  testiIdx=n;
+  const track=document.getElementById('testi-track');
+  const cardW=360;
+  track.style.transform=`translateX(-${n*(cardW+20)}px)`;
+  document.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+}
+setInterval(()=>goTesti((testiIdx+1)%TESTIMONIALS.length),4500);
+
+/* ============================
+   BRANCHES
+============================ */
+function renderBranches(){
+  const list=document.getElementById('branch-list');
+  list.innerHTML=BRANCHES.map((b,i)=>`
+    <div class="branch-card ${i===0?'active-branch':''}" onclick="selectBranch(${i},this)">
+      <div class="branch-card-top">
+        <div class="branch-icon"><i class="fa-solid fa-store"></i></div>
+        <div class="branch-name">${b.name}</div>
+      </div>
+      <div class="branch-address"><i class="fa-solid fa-location-dot" style="color:var(--orange);margin-right:6px"></i>${b.address}</div>
+    </div>
+  `).join('');
+}
+function selectBranch(i,el){
+  document.querySelectorAll('.branch-card').forEach(c=>c.classList.remove('active-branch'));
+  el.classList.add('active-branch');
+  const b=BRANCHES[i];
+  document.getElementById('map-frame').src=b.mapSrc;
+}
+
+/* ============================
+   STATS COUNTER
+============================ */
+function animateCounters(){
+  document.querySelectorAll('.stat-number[data-target]').forEach(el=>{
+    const target=parseFloat(el.dataset.target);
+    const dec=parseInt(el.dataset.decimal||'0');
+    const dur=2000;const steps=60;const step=dur/steps;
+    let cur=0;
+    const timer=setInterval(()=>{
+      cur+=target/steps;
+      if(cur>=target){cur=target;clearInterval(timer);}
+      el.textContent=dec>0?cur.toFixed(dec):Math.floor(cur).toLocaleString('id-ID');
+    },step);
+  });
+}
+
+/* ============================
+   REVEAL ON SCROLL
+============================ */
+function initReveal(){
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+        // Trigger counter animation when stats visible
+        if(e.target.closest('#stats')){animateCounters();}
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+}
+
+/* ============================
+   NAVBAR ACTIVE
+============================ */
+function initNavActive(){
+  const sections=['hero','why','stats','menu','testi','location','jam'];
+  const links=document.querySelectorAll('.nav-link[data-section]');
+  window.addEventListener('scroll',()=>{
+    let cur='hero';
+    sections.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el&&el.getBoundingClientRect().top<=80)cur=id;
+    });
+    links.forEach(l=>l.classList.toggle('active',l.dataset.section===cur));
+  },{passive:true});
+}
+
+/* ============================
+   TOAST
+============================ */
+function showToast(html){
+  const t=document.createElement('div');
+  t.className='toast';t.innerHTML=html;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),400)},2800);
+}
+
+/* ============================
+   FLOATING FOOD HERO ANIMATION
+============================ */
+
+function initFoodFloat(){
+  const layer=document.getElementById('hero-food-layer');
+  // Spawn emoji particles continuously
+  function spawnEmoji(){
+    const el=document.createElement('div');
+    el.className='hero-food-float';
+    el.textContent=FOOD_EMOJIS[Math.floor(Math.random()*FOOD_EMOJIS.length)];
+    const size=1.8+Math.random()*2.5;
+    const dur=8+Math.random()*12;
+    const delay=Math.random()*2;
+    const x=5+Math.random()*90;
+    el.style.cssText=`
+      left:${x}%;bottom:-60px;font-size:${size}rem;
+      animation-duration:${dur}s;animation-delay:${delay}s;
+    `;
+    layer.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+delay+1)*1000);
+  }
+  // Spawn 3 initially then keep interval
+  for(let i=0;i<4;i++){
+    setTimeout(spawnEmoji, i*800);
+  }
+  setInterval(spawnEmoji,1800);
+
+  // Spawn steam particles
+  function spawnParticle(){
+    const el=document.createElement('div');
+    el.className='hero-particle';
+    const size=3+Math.random()*6;
+    const dur=4+Math.random()*6;
+    el.style.cssText=`
+      left:${10+Math.random()*80}%;bottom:${10+Math.random()*30}%;
+      width:${size}px;height:${size}px;
+      animation-duration:${dur}s;animation-delay:${Math.random()*3}s;
+      background:${Math.random()>.5?'var(--orange)':'rgba(255,255,255,0.4)'};
+    `;
+    layer.appendChild(el);
+    setTimeout(()=>el.remove(),(dur+3+1)*1000);
+  }
+  for(let i=0;i<6;i++)setTimeout(spawnParticle,i*400);
+  setInterval(spawnParticle,1000);
+
+  // Floating bowl cards (fixed position, cycling)
+  const positions=[
+    {right:'8%',top:'22%',delay:0},
+    {right:'14%',bottom:'28%',delay:2},
+    {left:'4%',top:'40%',delay:3.5},
+  ];
+  positions.forEach((pos,i)=>{
+    const card=document.createElement('div');
+    card.className='hero-bowl-card';
+    const d=FOOD_CARDS[i%FOOD_CARDS.length];
+    card.innerHTML=`<div class="bowl-emoji">${d.emoji}</div><div class="bowl-text"><div class="bowl-name">${d.name}</div><div class="bowl-price">${d.price}</div></div>`;
+    const dur=5+i*1.2;
+    card.style.cssText=`
+      ${pos.right?'right:'+pos.right+';':''}
+      ${pos.left?'left:'+pos.left+';':''}
+      ${pos.top?'top:'+pos.top+';':''}
+      ${pos.bottom?'bottom:'+pos.bottom+';':''}
+      animation-duration:${dur}s;
+      animation-delay:${pos.delay}s;
+      opacity:0.9;
+    `;
+    layer.appendChild(card);
+  });
+}
+
+
+renderMenus();
+renderTestimonials();
+renderBranches();
+initCatNav();
+initReveal();
+initNavActive();
+initFoodFloat();
+</script>
+</body>
+</html>
